@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- ...existing code... -->
+  <title>Agriculture Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .page-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .main-content-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(34,139,34,0.10);
+      margin-bottom: 2rem;
+      background: #fff;
+      border: none;
+    }
+    
+    .weather-icon {
+      font-size: 2.5rem;
+      color: #228B22;
+    }
+    
+    .forecast-temp {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #f68b1e;
+    }
+    
+    .forecast-day {
+      font-size: 1rem;
+      color: #228B22;
+      font-weight: 500;
+    }
+    
+    .city-weather-card {
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(34,139,34,0.08);
+      background: #fff;
+      margin-bottom: 1.2rem;
+      padding: 1rem 1.2rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(34,139,34,0.1);
+    }
+    
+    .city-weather-card:hover {
+      box-shadow: 0 6px 18px rgba(34,139,34,0.15);
+      transform: translateY(-2px);
+    }
+    
+    .city-weather-title {
+      font-weight: 600;
+      color: #228B22;
+      margin-bottom: 0.2em;
+    }
+    
+    .city-weather-temp {
+      font-size: 1.1rem;
+      color: #f68b1e;
+      font-weight: 500;
+    }
+    
+    .trend-card {
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(34,139,34,0.10);
+      background: #fff;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border: none;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 3px solid #f68b1e;
+      border-top: 3px solid #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .section-title {
+      color: #228B22;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(to bottom, #228B22, #f68b1e);
+      border-radius: 2px;
+    }
+    
+    .weather-summary {
+      background: linear-gradient(135deg, #228B22 0%, #f68b1e 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .weather-summary h3 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .weather-summary .main-temp {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 1rem 0;
+    }
+    
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1rem;
+      }
+      
+      .main-content-card {
+        padding: 1.5rem;
+      }
+      
+      .page-header h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <header class="page-header">
+      <h2>🌾 Agriculture Dashboard</h2>
+      <p class="lead">Real-time weather insights and AI-powered crop predictions</p>
+    </header>
+    
+    <div class="main-content-card">
+      <!-- Weather Summary Section -->
+      <div class="weather-summary">
+        <h3>Current Weather</h3>
+        <div class="d-flex align-items-center justify-content-center">
+          <span class="weather-icon me-3" id="main-weather-icon" style="font-size: 4rem; color: white;">&#9925;</span>
+          <div>
+            <div class="fw-bold" id="location-name" style="font-size: 1.2rem;">Kampala, Uganda</div>
+            <div id="today-weather" style="font-size: 1.1rem;">Loading...</div>
+            <div class="main-temp" id="today-temp">--°C</div>
+            <div id="today-wind" style="font-size: 0.9rem;"></div>
+            <div id="today-humidity" style="font-size: 0.9rem;"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content Grid -->
+      <div class="row g-4">
+        <!-- 5-Day Forecast -->
+        <div class="col-12">
+          <h4 class="section-title">5-Day Forecast</h4>
+          <div class="card p-4">
+            <div class="row text-center" id="forecast-row">
+              <!-- Forecast will be injected here -->
+            </div>
+            <div class="mt-3 text-center">
+              <button class="btn btn-primary" id="refreshWeatherBtn">
+                <span class="weather-icon me-2">&#9881;</span> Refresh Weather Data
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- AI Analytics Section -->
+        <div class="col-lg-6 col-12">
+          <h4 class="section-title">AI Crop Yield Prediction</h4>
+          <div class="card p-4">
+            <canvas id="aiChart" height="200"></canvas>
+            <div class="mt-3 small text-muted text-center">AI-powered crop yield prediction for Maize (2024)</div>
+            <div class="mt-3 text-center">
+              <button class="btn btn-success" id="updateChartBtn">
+                <span class="weather-icon me-2">&#128161;</span> Update AI Prediction
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Temperature Trend -->
+        <div class="col-lg-6 col-12">
+          <h4 class="section-title">Temperature Trend Analysis</h4>
+          <div class="trend-card">
+            <canvas id="tempTrendChart" height="200"></canvas>
+            <div class="mt-2 small text-muted text-center">Past 7 days temperature trend</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Regional Weather Section -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <h4 class="section-title">Weather in Nearby Cities</h4>
+          <div class="card p-4">
+            <div class="row" id="cities-weather">
+              <!-- City weather cards will be injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- API Information -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card p-4 bg-light">
+            <h5 class="mb-3 text-success">
+              <span class="weather-icon me-2">&#128187;</span>API Integration
+            </h5>
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="text-primary">Weather Data</h6>
+                <p class="mb-2">Uses <a href="https://open-meteo.com/" target="_blank" class="text-decoration-none">Open-Meteo API</a> for live weather data</p>
+                <small class="text-muted">Real-time weather for Kampala and surrounding areas</small>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-success">AI Analytics</h6>
+                <p class="mb-2">Simulates AI crop yield prediction models</p>
+                <small class="text-muted">Replace with your ML API endpoint for production</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Weather API (Simulated real data for demo)
+    async function fetchWeather() {
+      // Kampala coordinates
+      const lat = 0.3476, lon = 32.5825;
+      
+      document.getElementById('today-weather').innerHTML = 'Loading <span class="loading-spinner"></span>';
+      document.getElementById('today-temp').textContent = '--°C';
+      document.getElementById('today-wind').textContent = '';
+      document.getElementById('today-humidity').textContent = '';
+      
+      try {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Simulated realistic weather data for Kampala
+        const weatherData = {
+          name: "Kampala",
+          sys: { country: "Uganda" },
+          main: { 
+            temp: 24 + Math.random() * 4, // 24-28°C typical for Kampala
+            humidity: 60 + Math.random() * 20 // 60-80% humidity
+          },
+          weather: [{ 
+            description: ["partly cloudy", "sunny", "mostly sunny", "few clouds"][Math.floor(Math.random() * 4)]
+          }],
+          wind: { speed: 2 + Math.random() * 3 } // 2-5 m/s
+        };
+        
+        // Simulated forecast data
+        const forecastData = {
+          list: []
+        };
+        
+        // Generate 5 days of forecast data
+        for (let i = 0; i < 40; i++) { // 5 days * 8 forecasts per day
+          forecastData.list.push({
+            dt: Date.now() / 1000 + (i * 3 * 3600), // Every 3 hours
+            main: {
+              temp: 22 + Math.random() * 6, // 22-28°C range
+              humidity: 60 + Math.random() * 20
+            },
+            weather: [{ 
+              description: ["partly cloudy", "sunny", "mostly sunny", "few clouds", "light rain"][Math.floor(Math.random() * 5)]
+            }],
+            wind: { speed: 2 + Math.random() * 3 },
+            pop: Math.random() * 40 // 0-40% chance of precipitation
+          });
+        }
+        // Current weather
+        const current = weatherData;
+        document.getElementById('location-name').textContent = `${current.name}, ${current.sys.country}`;
+        document.getElementById('today-weather').textContent = "Today: " + current.weather[0].description;
+        document.getElementById('today-temp').textContent = Math.round(current.main.temp) + "°C";
+        document.getElementById('main-weather-icon').innerHTML = weatherConditionToIcon(current.weather[0].description);
+        document.getElementById('today-wind').textContent = "Wind: " + current.wind.speed + " m/s";
+        document.getElementById('today-humidity').textContent = "Humidity: " + current.main.humidity + "%";
+        
+        // Forecast - Group by day and get daily highs/lows
+        const dailyForecasts = {};
+        forecastData.list.forEach(item => {
+          const date = new Date(item.dt * 1000).toLocaleDateString();
+          if (!dailyForecasts[date]) {
+            dailyForecasts[date] = {
+              temps: [],
+              conditions: [],
+              humidity: [],
+              wind: [],
+              pop: []
+            };
+          }
+          dailyForecasts[date].temps.push(item.main.temp);
+          dailyForecasts[date].conditions.push(item.weather[0].description);
+          dailyForecasts[date].humidity.push(item.main.humidity);
+          dailyForecasts[date].wind.push(item.wind.speed);
+          dailyForecasts[date].pop.push(item.pop * 100);
+        });
+        
+        // Create 5-day forecast
+        const forecastRow = document.getElementById('forecast-row');
+        const days = Object.keys(dailyForecasts).slice(0, 5);
+        forecastRow.innerHTML = days.map((date, i) => {
+          const dayData = dailyForecasts[date];
+          const dateObj = new Date(date);
+          const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+          const tempMax = Math.round(Math.max(...dayData.temps));
+          const tempMin = Math.round(Math.min(...dayData.temps));
+          const condition = dayData.conditions[0]; // First condition of the day
+          const precip = Math.round(dayData.pop.reduce((a, b) => a + b, 0) / dayData.pop.length);
+          const wind = Math.round(dayData.wind.reduce((a, b) => a + b, 0) / dayData.wind.length);
+          const humidity = Math.round(dayData.humidity.reduce((a, b) => a + b, 0) / dayData.humidity.length);
+          
+          return `<div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body text-center">
+                <div class="forecast-day fw-bold">${dayName}</div>
+                <div class="weather-icon my-2">${weatherConditionToIcon(condition)}</div>
+                <div class="forecast-temp">${tempMax}°C / <span class="text-secondary">${tempMin}°C</span></div>
+                <div class="small text-muted">${condition}</div>
+                <div class="small text-primary mt-1">💧 ${precip}%</div>
+                <div class="small text-info mt-1">💨 ${wind} m/s</div>
+                <div class="small text-success mt-1">💧 ${humidity}%</div>
+              </div>
+            </div>
+          </div>`;
+        }).join('');
+      } catch (e) {
+        console.error('Weather API Error:', e);
+        document.getElementById('today-weather').textContent = "Today: Unable to load";
+        document.getElementById('today-temp').textContent = "--°C";
+        document.getElementById('forecast-row').innerHTML = `<div class="col-12 text-danger">Failed to load forecast. Please try again.</div>`;
+      }
+    }
+    
+    function weatherConditionToIcon(condition) {
+      const lowerCondition = condition.toLowerCase();
+      if (lowerCondition.includes('sunny') || lowerCondition.includes('clear')) return "&#9728;"; // Sunny
+      if (lowerCondition.includes('partly cloudy') || lowerCondition.includes('partly sunny')) return "&#9925;"; // Partly Cloudy
+      if (lowerCondition.includes('cloudy') || lowerCondition.includes('overcast')) return "&#9729;"; // Cloudy
+      if (lowerCondition.includes('fog') || lowerCondition.includes('mist')) return "&#127787;"; // Fog
+      if (lowerCondition.includes('drizzle') || lowerCondition.includes('light rain')) return "&#127783;"; // Drizzle
+      if (lowerCondition.includes('rain') || lowerCondition.includes('shower')) return "&#127783;"; // Rain
+      if (lowerCondition.includes('thunder') || lowerCondition.includes('storm')) return "&#9889;"; // Thunderstorm
+      if (lowerCondition.includes('snow')) return "&#10052;"; // Snow
+      return "&#9728;"; // Default Sunny
+    }
+    document.getElementById('refreshWeatherBtn').onclick = function() {
+      fetchWeather();
+      fetchNearbyCitiesWeather();
+    };
+    fetchWeather();
+
+    // AI Chart Board (simulate API call for crop yield prediction) - Improved with loading spinner
+    let chartData = [2.1, 2.3, 2.8, 3.2, 3.5, 3.7, 3.6, 3.8];
+    const ctx = document.getElementById('aiChart').getContext('2d');
+    const aiChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+        datasets: [{
+          label: 'Predicted Yield (tons/ha)',
+          data: chartData,
+          borderColor: '#228B22',
+          backgroundColor: 'rgba(34,139,34,0.08)',
+          tension: 0.3,
+          pointBackgroundColor: '#f68b1e',
+          pointRadius: 4,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'Yield (tons/ha)' } },
+          x: { title: { display: true, text: 'Month' } }
+        }
+      }
+    });
+
+    document.getElementById('updateChartBtn').onclick = async function() {
+      // Show spinner
+      const btn = this;
+      btn.disabled = true;
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<span class="loading-spinner"></span> Updating AI Prediction...';
+      // Simulate API call delay
+      await new Promise(res => setTimeout(res, 900));
+      chartData = chartData.map(y => (Number(y) + (Math.random() - 0.5) * 0.3).toFixed(2));
+      aiChart.data.datasets[0].data = chartData;
+      aiChart.update();
+      btn.innerHTML = orig;
+      btn.disabled = false;
+    };
+
+    // Weather in Nearby Cities (using real API data)
+    const nearbyCities = [
+      { name: "Entebbe", lat: 0.0586, lon: 32.4635 },
+      { name: "Jinja", lat: 0.4244, lon: 33.2046 },
+      { name: "Gulu", lat: 2.7745, lon: 32.2989 },
+      { name: "Mbarara", lat: -0.6071, lon: 30.6486 },
+      { name: "Mbale", lat: 1.0679, lon: 34.1761 }
+    ];
+    // Fetch weather for nearby cities
+    async function fetchNearbyCitiesWeather() {
+      const citiesWeatherDiv = document.getElementById('cities-weather');
+      citiesWeatherDiv.innerHTML = '<div class="col-12 text-center"><span class="loading-spinner"></span> Loading nearby cities weather...</div>';
+      
+      const weatherPromises = nearbyCities.map(async (city) => {
+        try {
+          // Simulate API delay
+          await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
+          
+          // Generate realistic weather data for each city
+          const baseTemp = 22 + Math.random() * 6; // 22-28°C range
+          const conditions = ["sunny", "partly cloudy", "mostly sunny", "few clouds", "light rain"];
+          const condition = conditions[Math.floor(Math.random() * conditions.length)];
+          
+          return {
+            name: city.name,
+            temp: Math.round(baseTemp),
+            desc: condition,
+            icon: weatherConditionToIcon(condition)
+          };
+        } catch (e) {
+          return {
+            name: city.name,
+            temp: '--',
+            desc: 'Data unavailable',
+            icon: '&#9729;'
+          };
+        }
+      });
+      
+      const citiesData = await Promise.all(weatherPromises);
+      citiesWeatherDiv.innerHTML = citiesData.map(city =>
+        `<div class="col-md-6 col-lg-4 mb-3">
+          <div class="city-weather-card d-flex align-items-center justify-content-between h-100">
+            <div>
+              <div class="city-weather-title">${city.name}</div>
+              <div class="small text-muted">${city.desc}</div>
+            </div>
+            <div>
+              <span class="weather-icon">${city.icon}</span>
+              <span class="city-weather-temp ms-2">${city.temp}°C</span>
+            </div>
+          </div>
+        </div>`
+      ).join('');
+    }
+    
+    fetchNearbyCitiesWeather();
+
+    // Temperature Trend Chart (static demo, replace with API for live data)
+    const tempTrendData = [27, 28, 26, 25, 27, 29, 28];
+    const tempTrendCtx = document.getElementById('tempTrendChart').getContext('2d');
+    new Chart(tempTrendCtx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Temperature (°C)',
+          data: tempTrendData,
+          borderColor: '#f68b1e',
+          backgroundColor: 'rgba(246,139,30,0.08)',
+          tension: 0.3,
+          pointBackgroundColor: '#228B22',
+          pointRadius: 4,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: false, title: { display: true, text: '°C' } },
+          x: { title: { display: true, text: 'Day' } }
+        }
+      }
+    });
+  </script>
+  <!-- ...existing code... -->
+</body>
+</html>

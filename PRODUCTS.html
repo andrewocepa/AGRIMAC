@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Agrimac — Demo (HTML + CSS + JS)</title>
+  <meta name="description" content="Simple Agrimac static starter with HTML, CSS and JavaScript." />
+  <style>
+    :root{
+      --accent: #f68b1e; /* Jumia orange */
+      --muted: #757575;
+      --bg: #f5f5f5;
+      --jumia-dark: #232323;
+      --jumia-light: #fff;
+      --jumia-border: #e0e0e0;
+    }
+    *{box-sizing:border-box}
+    body {
+        background-color: rgba(255,255,255,0.6);
+        background-image: url('https://pixabay.com/get/g1f352759c523895a0764d8a113f62f5e6593d896471c7a5f6f0913ad3adf3f46d07f9bf7628809dbd40d441fa30f086f764af168245874cbe7b1c2fcfeb92134_1280.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        background-blend-mode: lighten;
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+        margin: 0;
+        color: var(--jumia-dark);
+    }
+    header{
+        background: var(--jumia-light);
+        color: var(--jumia-dark);
+        padding: 0.75rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid var(--jumia-border);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    header h1{
+        margin: 0;
+        font-size: 1.7rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--accent);
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    }
+    nav a{
+        color: var(--jumia-dark);
+        text-decoration: none;
+        margin-left: 1.2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        position: relative;
+        transition: color 0.2s;
+    }
+    nav a:hover{
+        color: var(--accent);
+    }
+    .container{
+        max-width: 1200px;
+        margin: 1.5rem auto;
+        padding: 0 1rem;
+    }
+    .hero{
+        background: var(--jumia-light);
+        padding: 1.5rem;
+        border-radius: 10px;
+        display: flex;
+        gap: 1.2rem;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+        border: 1px solid var(--jumia-border);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .hero h2{
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--accent);
+    }
+    .hero p{
+        margin: .25rem 0 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+    }
+    .hero .meta{
+        margin-left:0;
+        text-align:center;
+        min-width:160px
+    }
+
+    .controls{
+        display:flex;
+        gap:.75rem;
+        margin-top:1rem;
+        flex-wrap:wrap
+    }
+    .controls input[type=search],.controls select{
+        padding:.6rem 1rem;
+        border-radius:6px;
+        border:1px solid var(--jumia-border);
+        font-size:1rem;
+        background: var(--jumia-light);
+    }
+    .controls button{
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        padding: .6rem 1.1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba(246,139,30,0.08);
+        transition: background 0.2s;
+    }
+    .controls button:hover{
+        background: #d97706;
+    }
+
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        gap:1.5rem;
+        margin-top:1rem
+    }
+    .card{
+        background: var(--jumia-light);
+        border-radius: 10px;
+        padding: 1.2rem 1rem;
+        border: 1px solid var(--jumia-border);
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        transition: box-shadow 0.2s, transform 0.2s;
+        position: relative;
+    }
+    .card:hover{
+        box-shadow: 0 8px 24px rgba(246,139,30,0.12);
+        transform: translateY(-4px) scale(1.02);
+        border-color: var(--accent);
+    }
+    .card h4{
+        margin:0;
+        font-size:1.1rem;
+        font-weight:700;
+        color: var(--jumia-dark);
+    }
+    .muted{
+        color:var(--muted);
+        font-size:.95rem
+    }
+    .price{
+        font-weight:700;
+        font-size:1.15rem;
+        color: var(--accent);
+    }
+    .cta{
+        margin-top:auto;
+        display:flex;
+        gap:.5rem
+    }
+    .btn{
+        padding:.5rem .9rem;
+        border-radius:6px;
+        border:none;
+        cursor:pointer;
+        font-weight:600;
+        font-size:1rem;
+        box-shadow: 0 2px 8px rgba(246,139,30,0.08);
+        transition: background 0.2s;
+    }
+    .btn.primary{
+        background:var(--accent);
+        color:#fff
+    }
+    .btn.primary:hover{
+        background:#d97706;
+    }
+    .btn.ghost{
+        background:transparent;
+        border:1px solid var(--jumia-border);
+        color: var(--jumia-dark);
+    }
+    .btn.ghost:hover{
+        background: #3437e2;
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+    footer{
+        text-align:center;
+        color:var(--jumia-light);
+        font-size:.95rem;
+        margin:2rem 0;
+        background: var(--accent);
+        padding: 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        box-shadow: 0 2px 8px rgba(246,139,30,0.08);
+    }
+
+    /* Modal */
+    .modal-backdrop{
+        position:fixed;
+        inset:0;
+        background:rgba(35,35,35,0.55);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:1rem;
+        z-index:60;
+        backdrop-filter: blur(4px);
+    }
+    .modal{
+        background:var(--jumia-light);
+        max-width:680px;
+        width:100%;
+        border-radius:12px;
+        padding:1.2rem 1.5rem;
+        box-shadow: 0 8px 32px rgba(35,35,35,0.12);
+        border: 1px solid var(--jumia-border);
+    }
+
+    /* Focus styles for accessibility */
+    button:focus, input:focus, textarea:focus, select:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    /* Responsive typography scale */
+    h1, h2, h3 {
+        line-height: 1.2;
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    }
+    @media (max-width: 768px) {
+        h1 { font-size: 1.3rem; }
+        h2 { font-size: 1.1rem; }
+        h3 { font-size: 1rem; }
+        .container { padding: 0 0.5rem; }
+    }
+    @media (max-width:640px){
+        header{padding:.5rem;}
+        .hero{flex-direction:column;align-items:flex-start;padding:1rem;}
+        .grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Agrimac</h1>
+    <nav>
+      <a href="C:\Users\joach\OneDrive\Desktop\NEW AGRIMAC\COCO.html">Advertise</a>
+      <a href="submit" li="josephhaxzy@gmai.com">Contact</a>
+      <a href="#payment" id="open-payment=josephhaxzy@gmail.com">Payment</a>
+      <a href="C:\Users\joach\OneDrive\Desktop\NEW AGRIMAC\weather page.html">Weather Features</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <h2 id="hero-title">Smart tools for resilient, future-ready farms</h2>
+        <p>Discover curated agri-tech essentials, compare specs in seconds, and restock with confidence—online or offline.</p>
+      </div>
+      <div class="meta">
+        <div class="muted">Upgrade yourself</div>
+        <strong id="year"></strong>
+      </div>
+    </section>
+
+    <section id="products" aria-labelledby="products-title">
+      <div class="controls" style="align-items:center">
+        <input type="search" id="search" placeholder="Search products..." aria-label="Search products" />
+        <select id="category">
+          <option value="all">All categories</option>
+        </select>
+        <button id="clear">Clear</button>
+      </div>
+
+      <div id="product-list" class="grid" aria-live="polite" style="min-height:120px;margin-top:8px">
+        <!-- cards rendered by JS -->
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:1.5rem">
+      <h3>Contact</h3>
+      <form id="contact-form" style="max-width:600px;background:#fff;padding:1rem;border-radius:10px;border:1px solid #e6e9ee">
+        <label style="display:block;margin-bottom:.5rem"><input name="name" placeholder="Your name" required style="width:100%;padding:.5rem;border-radius:6px;border:1px solid #e5e7eb"/></label>
+        <label style="display:block;margin-bottom:.5rem"><input name="email" placeholder="Email" type="email" required style="width:100%;padding:.5rem;border-radius:6px;border:1px solid #e5e7eb"/></label>
+        <label style="display:block;margin-bottom:.5rem"><textarea name="message" placeholder="How can we help?" required style="width:100%;padding:.5rem;border-radius:6px;border:1px solid #e5e7eb;min-height:100px"></textarea></label>
+        <div style="display:flex;gap:.5rem"><button class="btn primary" type="submit">Send</button><button class="btn ghost" type="button" id="save-sample">Save sample data</button></div>
+        <div id="contact-result" style="margin-top:.75rem;color:var(--muted)"></div>
+      </form>
+    </section>
+
+  </main>
+
+  <footer>&copy; <span id="foot-year"></span> Agrimac • Demo</footer>
+
+  <!-- Modal container (hidden when not used) -->
+  <div id="modal-root" aria-hidden="true"></div>
+
+  <script>
+(function () {
+  // Versioned storage keys
+  const KEYS = {
+    CART: 'agrimac_cart_v1',
+    MESSAGES: 'agrimac_messages_v1',
+    PAYMENTS: 'agrimac_payments_v1'
+  };
+
+  // Demo product data (static) — add image, stars, forks
+  const PRODUCTS = [
+    { id: 1, name: 'Solar Irrigation Pump', price: 1299.99, stock: 12, category: 'equipment', desc: 'High-efficiency solar pump for smallholder irrigation.', img: 'https://pixabay.com/get/g60bcbd682752225b97baa63c16f9c71e832a8b4622afbd540a9d811f6abd2f22c5aee0c585fa2fff5c69a130b36fa22b050cdc6ccc763f56d6e6a79b8e0e22ef_1280.jpg', stars: 120, forks: 30 },
+    { id: 2, name: 'Organic Fertilizer (50kg)', price: 45.00, stock: 200, category: 'inputs', desc: 'Slow-release organic fertilizer for better yields.', img: 'https://pixabay.com/get/g63716b65d75795d7bf2aa6e04aa4438968260b3a1bf98beedcb1207e549fa0b3d60e11c382fd2206102b58b9b91af197ee06d02a4d5afb88e85f69a102241063_1280.jpg', stars: 95, forks: 18 },
+    { id: 3, name: 'Precision Seeder', price: 799.50, stock: 6, category: 'equipment', desc: 'Seeder for uniform seed spacing and depth control.', img: 'https://pixabay.com/get/g7d71a5921eca3e05d939bc6da11b8837cfa5765afa57815f6cf5875e889407194a335a76a414e23787565ab558ee0544a6f9ea8c7d47962ebb07a4f76dc6735e_1280.jpg', stars: 80, forks: 12 },
+    { id: 4, name: 'Soil Moisture Sensor', price: 59.99, stock: 120, category: 'sensors', desc: 'Wireless sensor to monitor soil moisture in real time.', img: 'https://pixabay.com/get/g7b27fb44f6a694737585923a188218a1c16a05615a84144316db686bd77b983c74af8fb1c61d0bebb5d581a13d2fe86ec16f91ce42fa83dbdea284254203373d_1280.jpg', stars: 60, forks: 8 },
+    { id: 5, name: 'Pest Monitoring Traps (10)', price: 19.99, stock: 500, category: 'inputs', desc: 'Non-toxic pheromone traps for integrated pest management.', img: 'https://pixabay.com/get/g91c306387486235d0af07541aaa3c7e2b81fb823eb3bb7ba3c77c34a4672784607d826de302ff9f172f366e6b15e991a58c6755d5d37e98c396659405df1caf7_1280.jpg', stars: 40, forks: 5 },
+    { id: 6, name: 'John Deere 5075E Tractor', price: 34000000, stock: 5, category: 'equipment', desc: 'Reliable 75HP tractor for medium to large farms. Fuel efficient and easy to maintain.', img: 'https://pixabay.com/get/gc099e2cb2fa30dd2d9060d2825969a9387a47ef36f5e1d984ab0076f3cbdad95259ad771dce1bf808bad5aad43ab31aafb7cc14937208e6023d06de1e1629bf3_1280.jpg', stars: 120, forks: 30 },
+    { id: 7, name: 'Massey Ferguson 260', price: 28500000, stock: 8, category: 'equipment', desc: '60HP tractor, ideal for small farms and gardens.', img: 'https://pixabay.com/get/gc7eff557fc16f1598a95d7bd4362d8a8a8b5528ede80b2aeb6081246080db7e95435d4ef1e08846ef2c05717fbc1e6c64ec9af6013283ffc36df7fbebd08d87f_1280.jpg', stars: 98, forks: 22 },
+    { id: 8, name: 'Kubota M7040', price: 65000, stock: 10, category: 'equipment', desc: '70HP, compact and versatile for various farm tasks.', img: 'https://pixabay.com/get/g7872a5caffe8a31e80cced0b66970b1f6f57088c51c63648b7ffe2c932da8c2becd93542a81659f437a3941b1b2c18516edc4a2855f4383d02af966ea22ba51d_1280.jpg', stars: 110, forks: 27 },
+    { id: 9, name: 'New Holland TD5.90', price: 39000000, stock: 6, category: 'equipment', desc: '90HP, advanced hydraulics and comfortable cabin.', img: 'https://pixabay.com/get/gcad4b386881e0da9f909b1aef9ac2c6f9f5fc33d4ce185fbdd5f79fe83643b71c516818d9e7cb20ebd6bad82767e67c82164826caa78f870c80ce6916a62479f_1280.jpg', stars: 95, forks: 19 },
+    { id: 10, name: 'Case IH JX75T', price: 33000000, stock: 7, category: 'equipment', desc: '75HP, robust build for tough terrains.', img: 'https://pixabay.com/get/g7a8dbe9c590351f62f2283939a4f9ed841f0c808c68c510ee7f344cdd81ee7ba8f9940ba4a7298873d75947c62a5001653b1b48aed10a143c11fd8b072ba20c7_1280.jpg', stars: 87, forks: 15 },
+    { id: 11, name: 'Mahindra 475 DI', price: 21000000, stock: 12, category: 'equipment', desc: '42HP, affordable and reliable for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\3D Models _ Over A Million Models For Download _ TurboSquid.jpeg', stars: 80, forks: 12 },
+    { id: 12, name: 'Sonalika DI 60', price: 25000000, stock: 9, category: 'equipment', desc: '60HP, fuel efficient and low maintenance.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Saw.jpeg', stars: 76, forks: 10 },
+    { id: 13, name: 'Deutz Fahr Agrolux 70', price: 29000000, stock: 5, category: 'equipment', desc: '70HP, German engineering for durability.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Construction Tools List & Uses In Building Work.jpeg', stars: 70, forks: 8 },
+    { id: 14, name: 'Farmtrac 60 EPI', price: 23000000, stock: 11, category: 'equipment', desc: '50HP, best for ploughing and tilling.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Tractor Trailer for Sale - Buy Tractor Trailer Accessories - FieldKing.jpeg', stars: 65, forks: 7 },
+    { id: 15, name: 'Eicher 485', price: 19000000, stock: 13, category: 'equipment', desc: '45HP, simple and easy to operate.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Buy Knapsack Power Sprayer Victor CA-767B.jpeg', stars: 60, forks: 6 },
+    { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+    { id: 22, name: 'Captain 280 DI', price: 12000000, stock: 10, category: 'equipment', desc: '28HP, mini tractor for gardens and orchards.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Game Bird Brooder Box - 1 Layer Quail Brooder _ Cimuka, Hatching Time.jpeg', stars: 40, forks: 1 },
+    { id: 23, name: 'ACE DI 6565', price: 27000000, stock: 5, category: 'equipment', desc: '65HP, high torque for heavy implements.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\What is Fertilizer_ Have you ever wondered what those three numbers on a bag, box, or fertilizer package mean_ How do you analyze them_ Find out here_.jpeg', stars: 38, forks: 1 },
+    { id: 24, name: 'Powertrac Euro 50', price: 24000000, stock: 7, category: 'equipment', desc: '50HP, Euro series for advanced farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\06d852d0-1197-4daf-8089-148db1561205.jpeg', stars: 35, forks: 1 },
+    { id: 25, name: 'Fendt 720 Vario', price: 120000000, stock: 2, category: 'equipment', desc: '200HP, premium tractor for large scale farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Our Editors Have Gardened for Years, and These Are the Tools They Can\'t Grow Without.jpeg', stars: 150, forks: 40 },
+    { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+    { id: 28, name: 'Valtra T234', price: 140000000, stock: 1, category: 'equipment', desc: '250HP, high performance for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\8d55d978-05ae-430a-80c2-fc0b814e0ac3.jpeg', stars: 160, forks: 45 },
+    { id: 29, name: 'Renault Ceres 85X', price: 38000000, stock: 6, category: 'equipment', desc: '85HP, French engineering for reliability.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\My beautiful and natural village life.jpeg', stars: 75, forks: 13 },
+    { id: 30, name: 'Fiat 640', price: 26000000, stock: 8, category: 'equipment', desc: '60HP, classic Italian tractor for all terrains.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\CountyLine 23 gal_ Galvanized Utility Stock Tank at Tractor Supply Co.jpeg', stars: 68, forks: 11 },
+    { id: 31, name: 'Ford 6600', price: 29000000, stock: 7, category: 'equipment', desc: '75HP, reliable and easy to maintain.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Marketmore 76 Cucumber Seeds (4g)- Heirloom, Non-GMO - Default Title - My Patriot Supply.jpeg', stars: 72, forks: 12 },
+    { id: 32, name: 'Zetor Proxima 100', price: 41000000, stock: 5, category: 'equipment', desc: '100HP, Czech technology for efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\b74b2e03-3ef2-4aef-a8f4-6dd5986e9499.jpeg', stars: 80, forks: 14 },
+    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+    { id: 34, name: 'Landini Powerfarm 100', price: 43000000, stock: 4, category: 'equipment', desc: '100HP, Italian design for comfort and power.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Quail Water Feed, 6 Slots Chicken Feed, 2 Pieces Bird Feed Dish for Pigeons, Chicks, Quails, Ducks and Poultry, Durable Water Trough for Efficient Animal Feeding and Easy.jpeg', stars: 78, forks: 13 },
+    { id: 34, name: 'Landini Powerfarm 100', price: 43000000, stock: 4, category: 'equipment', desc: '100HP, Italian design for comfort and power.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Quail Water Feed, 6 Slots Chicken Feed, 2 Pieces Bird Feed Dish for Pigeons, Chicks, Quails, Ducks and Poultry, Durable Water Trough for Efficient Animal Feeding and Easy.jpeg', stars: 78, forks: 13 },
+    { id: 34, name: 'Landini Powerfarm 100', price: 43000000, stock: 4, category: 'equipment', desc: '100HP, Italian design for comfort and power.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Quail Water Feed, 6 Slots Chicken Feed, 2 Pieces Bird Feed Dish for Pigeons, Chicks, Quails, Ducks and Poultry, Durable Water Trough for Efficient Animal Feeding and Easy.jpeg', stars: 78, forks: 13 },
+     { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+      { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+       { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+        { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+         { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+          { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+           { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+            { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+             { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+              { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+               { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+                { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+                 { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+                  { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+                   { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+                    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                    { id: 33, name: 'Ursus C-360', price: 24000000, stock: 9, category: 'equipment', desc: '60HP, Polish classic for small farms.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Chicken Duck Goose Anti Scattering Food Trough Anti Splashing Food Automatic Feeder Quail Feeding.jpeg', stars: 62, forks: 10 },
+                     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 26, name: 'Claas Arion 430', price: 60000000, stock: 3, category: 'equipment', desc: '110HP, versatile and efficient for all seasons.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Gardena 3196 Combisystem 5_5-Inch 4-Star Tiller_Cultivator Head.jpeg', stars: 90, forks: 18 },
+    { id: 27, name: 'JCB 3DX', price: 55000000, stock: 4, category: 'equipment', desc: 'Backhoe loader, multipurpose for construction and farming.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Cabbage Salad Recipes.jpeg', stars: 85, forks: 16 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 16, name: 'Escort Powertrac 439', price: 17000000, stock: 8, category: 'equipment', desc: '39HP, best for orchard and horticulture.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Self-Propelled Sprayers _ R4023 Sprayer.jpeg', stars: 58, forks: 5 },
+    { id: 17, name: 'TAFE 45 DI', price: 18000000, stock: 10, category: 'equipment', desc: '45HP, low cost and high efficiency.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Diamond Tool_ NUPLA 76151 Non-Conductive Pick Mattock, 36.jpeg', stars: 55, forks: 4 },
+    { id: 18, name: 'Force Balwan 500', price: 20000000, stock: 7, category: 'equipment', desc: '50HP, rugged and powerful for heavy duty.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\5 Best Shovel For Digging In Clay - Comprehensive Buying Guide!.jpeg', stars: 53, forks: 3 },
+    { id: 19, name: 'Indo Farm 3048 DI', price: 22000000, stock: 6, category: 'equipment', desc: '48HP, efficient and durable for various applications.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Walsall Wheelbarrows 85 Ltr Easiload Wheelbarrow Heavy Duty Builders Barrow in a Box - Pneumatic Wheel.jpeg', stars: 50, forks: 2 },
+    { id: 20, name: 'VST Shasakt 50', price: 20500000, stock: 8, category: 'equipment', desc: '50HP, compact and easy to maneuver.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\6a39c60f-244a-4e2a-abcf-2c5bae8ff8cf.jpeg', stars: 45, forks: 1 },
+    { id: 21, name: 'Preet 3549', price: 15000000, stock: 9, category: 'equipment', desc: '35HP, best for small land holdings.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\18f30f75-fe4f-4969-9c78-3ede633ab6a3.jpeg', stars: 43, forks: 1 },
+     { id: 9, name: 'New Holland TD5.90', price: 39000000, stock: 6, category: 'equipment', desc: '90HP, advanced hydraulics and comfortable cabin.', img: 'C:\\Users\\JOSEPH HAXZY\\Downloads\\Kubota M7171 Premium K-VT.jpeg', stars: 95, forks: 19 },
+    { id: 10, name: 'Case IH JX75T', price: 33000000, stock: 7, category: 'equipment', desc: '75HP, robust build for tough terrains.', img: '', stars: 87, forks: 15 },
+  ];
+
+  const CATEGORY_IMAGE_LIBRARY = {
+    equipment: [
+      'https://pixabay.com/get/gcad4b386881e0da9f909b1aef9ac2c6f9f5fc33d4ce185fbdd5f79fe83643b71c516818d9e7cb20ebd6bad82767e67c82164826caa78f870c80ce6916a62479f_1280.jpg',
+      'https://pixabay.com/get/g7872a5caffe8a31e80cced0b66970b1f6f57088c51c63648b7ffe2c932da8c2becd93542a81659f437a3941b1b2c18516edc4a2855f4383d02af966ea22ba51d_1280.jpg',
+      'https://pixabay.com/get/g75adcabe69866b5d4c903b154fd03507e6e030ea69da03de4f23383a0603005317b6ee11c4f45ee2206c0267c1c667770d07579174c779d2c8350541e66abccb_1280.jpg',
+      'https://pixabay.com/get/g60bcbd682752225b97baa63c16f9c71e832a8b4622afbd540a9d811f6abd2f22c5aee0c585fa2fff5c69a130b36fa22b050cdc6ccc763f56d6e6a79b8e0e22ef_1280.jpg',
+      'https://pixabay.com/get/g82fc7abbe985a0610d9f88b55e8da52c0e80d4c751b519f82e1847e9abbce83fdcf36f557f0c8e1c1a683cf14d33f1ed544e910dda74f99c704d2958ec8942f9_1280.jpg',
+      'https://pixabay.com/get/gdd2cf5fbeaeda87345dd58ccd51726f044297e94f3b54fb3e9171357f2dad8528dc24100ed6fbc86d2a4c12917c6296ca27c04f4f990b4b544091d575902a8a2_1280.jpg'
+    ],
+    inputs: [
+      'https://pixabay.com/get/g34fa68a68886cd160082e69c26d0f572f1689f27a6c410f7168aafa73cd38081af321df4402f8e988c75c702937aadf441161e4feb75f88be2daf049b74ae18d_1280.jpg',
+      'https://pixabay.com/get/ge7a1eb0be9ae5da8c6f1694d914e1c72af8c8b501563ee8c1bc856c19ffd219035eef1a79445fcf35a46289e25f39775_1280.jpg',
+      'https://pixabay.com/get/g6725fd5c410a6ce0c79e16405d98aa902757132651d6eb8a8ed9eb6aeb48f9357782b783f9068a0290c1d8e9b0de204facb46c1ff788f60cf40f9209cdf5bc2c_1280.jpg',
+      'https://pixabay.com/get/g78f6c47816b47882591b612a64ab475a3a3b0b7e24d37f852ccea9e3dd2a335609b84619a3c1c0c0427a95502e8895e519011f2ab066400336efc624585ff0c0_1280.jpg',
+      'https://pixabay.com/get/g2fbd7b970695eeb7bbe76e7a6f8163b0342a0d9e2df3cf461453c2b4cd76b8cc07bdd83fb793bf8ed85a0ac2dc651bd8a7b5cef812c5f304d81056b6854e4525_1280.jpg'
+    ],
+    sensors: [
+      'https://pixabay.com/get/g370e822aeaadd567c623d1f8ddf23a4d2b7b8ddf8d1b8e217bf74017f22c60622a01071ad5d62e94f01cd7262f7a1b7029db3e7625330871dbdc82387887c26e_1280.jpg',
+      'https://pixabay.com/get/g03dbc220342a7d7de9e82c25cdcfb8e55c762d72d1e704e6b839ff95ea2e97cc3ad6783844d68b03ee54af4fc7849bc40142b5da68a58f16a4a60a9c83b2330f_1280.jpg',
+      'https://pixabay.com/get/ge24fed5cbf457cf8a0eb02d0171bba7c10b9d4c7016ee17df611c22bc0c6cef60b52f4ce4f8a55a3f05e5038d2ed96ee9ac669d9144e5027a7209c8c48d38373_1280.jpg'
+    ],
+    default: [
+      'https://pixabay.com/get/g318c35aa19c08853e73804e7b142051103f80e40a62a17a5bf9966f5cdaae91336c72eb1085e696fce4694755e2dd0e9f59a2d0131c37284b43411401969f66b_1280.jpg',
+      'https://pixabay.com/get/gfbdd481e895772625ab50776b3069d9e7e4fed1c1d0478d187db53970470d05eaaeed9614846ccfeb714d5e07ee9cd38017aa8874a0656d5555d6354d1c034ee_1280.jpg'
+    ]
+  };
+
+  const categoryImageCursor = new Map();
+
+  function nextCategoryImage(category){
+    const library = CATEGORY_IMAGE_LIBRARY[category] || CATEGORY_IMAGE_LIBRARY.default;
+    if(!library || library.length === 0) return '';
+    const index = categoryImageCursor.get(category) || 0;
+    categoryImageCursor.set(category, index + 1);
+    return library[index % library.length];
+  }
+
+  PRODUCTS.forEach(product => {
+    const assignedImage = nextCategoryImage(product.category);
+    if(assignedImage){
+      product.img = assignedImage;
+    }
+    if(!product.img){
+      product.img = makePlaceholderImage(product.name);
+    }
+  });
+
+  // DOM refs
+  const listEl = document.getElementById('product-list');
+  const searchEl = document.getElementById('search');
+  const categoryEl = document.getElementById('category');
+  const clearBtn = document.getElementById('clear');
+  const modalRoot = document.getElementById('modal-root');
+  const paymentLink = document.getElementById('open-payment');
+
+  // Small helpers
+  const q = s => document.querySelector(s);
+  const formatCurrency = v => `$${Number(v).toFixed(2)}`;
+  function safeText(s){ return String(s).replace(/[<>]/g,''); }
+  function safeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+
+  const IMAGE_PALETTE = [
+    ['#0ea5e9','#1d4ed8'],
+    ['#f97316','#f59e0b'],
+    ['#10b981','#047857'],
+    ['#ec4899','#9333ea'],
+    ['#14b8a6','#0f172a'],
+    ['#facc15','#f97316'],
+    ['#a855f7','#6366f1'],
+    ['#f43f5e','#fb7185']
+  ];
+
+  function makePlaceholderImage(name){
+    const cleanName = safeText(name || 'Agrimac');
+    const initials = cleanName
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(part => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || 'AG';
+    const sum = Array.from(cleanName).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    const palette = IMAGE_PALETTE[sum % IMAGE_PALETTE.length];
+    const gradientId = `grad${sum % 9999}`;
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 240'>` +
+      `<defs><linearGradient id='${gradientId}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='${palette[0]}'/><stop offset='100%' stop-color='${palette[1]}'/></linearGradient></defs>` +
+      `<rect width='320' height='240' rx='24' fill='url(#${gradientId})'/>` +
+      `<text x='50%' y='54%' text-anchor='middle' font-size='72' font-family="Open Sans, Arial, sans-serif" fill='rgba(255,255,255,0.92)' letter-spacing='4'>${initials}</text>` +
+      `</svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }
+
+  function getProductImageSrc(product){
+    const raw = (product.img || '').trim();
+    if(raw.startsWith('data:image')) return raw;
+    if(/^(?:\.\.?\/|assets\/)/.test(raw)) return raw;
+    return makePlaceholderImage(product.name);
+  }
+
+  function debounce(fn, wait=250){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), wait); }; }
+
+  // Toast notifications (non-blocking)
+  function toast(msg, ms=2200){
+    const t = document.createElement('div');
+    t.textContent = msg;
+    Object.assign(t.style, {
+      position:'fixed', right:'18px', top:'18px', background:'#111', color:'#fff', padding:'8px 12px',
+      borderRadius:'8px', zIndex:200, boxShadow:'0 6px 18px rgba(2,6,23,.3)', fontSize:'13px'
+    });
+    document.body.appendChild(t);
+    setTimeout(()=> t.style.opacity = '0.0', ms-400);
+    setTimeout(()=> t.remove(), ms);
+  }
+
+  // Storage helpers
+  function getCart(){ try{ return JSON.parse(localStorage.getItem(KEYS.CART) || '[]'); } catch { return []; } }
+  function setCart(c){ localStorage.setItem(KEYS.CART, JSON.stringify(c)); }
+
+  // Build category options
+  (function buildCategories(){
+    const cats = ['all', ...Array.from(new Set(PRODUCTS.map(p=>p.category)))];
+    cats.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+      categoryEl.appendChild(opt);
+    });
+  })();
+
+  // Render list (Bootstrap-like card layout)
+  function renderList(filterText = '', filterCat = 'all'){
+    const qStr = (filterText || '').trim().toLowerCase();
+    const filtered = PRODUCTS.filter(p => {
+      const matchesQ = !qStr || p.name.toLowerCase().includes(qStr) || (p.desc && p.desc.toLowerCase().includes(qStr));
+      const matchesCat = filterCat === 'all' || p.category === filterCat;
+      return matchesQ && matchesCat;
+    });
+
+    if(filtered.length === 0){
+      listEl.innerHTML = '<div style="grid-column:1/-1;padding:1rem;background:#fff;border-radius:8px;border:1px dashed #e6e9ee;text-align:center;color:var(--muted)">No products found</div>';
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(p => `
+      <div class="col-sm-6 col-md-4 col-lg-3" style="display:flex;">
+        <div class="card h-100 shadow-sm" style="width:100%;display:flex;flex-direction:column;">
+          <img src="${safeAttr(p.img)}" class="card-img-top" alt="${safeText(p.name)}" style="width:100%;height:160px;object-fit:cover;border-radius:8px 8px 0 0;">
+          <div class="card-body d-flex flex-column" style="flex:1;display:flex;flex-direction:column;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.5rem;">
+              <h5 class="card-title" style="font-size:1.05rem;font-weight:700;color:var(--jumia-dark);margin:0;">${safeText(p.name)}</h5>
+              <span style="font-size:0.85rem;color:var(--muted);background:rgba(0,0,0,0.05);padding:2px 10px;border-radius:999px;text-transform:capitalize;">${safeText(p.category)}</span>
+            </div>
+            <p class="card-text text-muted mb-2" style="color:var(--muted);margin-bottom:0.5rem;line-height:1.4;">${safeText(p.desc)}</p>
+            <div class="d-flex justify-content-between small mb-2" style="display:flex;justify-content:space-between;font-size:0.92rem;margin-bottom:0.5rem;color:var(--muted);">
+              <span class="text-warning" style="color:#fbbf24;display:flex;align-items:center;gap:4px;">⭐ ${p.stars} reviews</span>
+              <span class="text-purple" style="color:#a855f7;display:flex;align-items:center;gap:4px;">🔁 ${p.forks} reorders</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+              <div class="price" style="font-weight:700;font-size:1.1rem;color:var(--accent);">${formatCurrency(p.price)}</div>
+              <div class="muted" style="font-size:0.85rem;">In stock: ${p.stock}</div>
+            </div>
+            <div class="cta" style="margin-top:auto;display:flex;gap:.5rem;">
+              <button class="btn primary" data-action="view" data-id="${p.id}">View details</button>
+              <button class="btn ghost" data-action="add" data-id="${p.id}">Add to cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Initial render
+  renderList();
+
+  // Event delegation for products (view/add)
+  listEl.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('button');
+    if(!btn) return;
+    const action = btn.dataset.action;
+    const id = Number(btn.dataset.id);
+    const product = PRODUCTS.find(p=>p.id===id);
+    if(!product) return;
+    if(action === 'view') openModal(product);
+    if(action === 'add') addToCartById(id, 1);
+  });
+
+  // Search & filter with debounce
+  const updateFromControls = () => renderList(searchEl.value, categoryEl.value);
+  const debouncedUpdate = debounce(updateFromControls, 220);
+  searchEl.addEventListener('input', debouncedUpdate);
+  categoryEl.addEventListener('change', updateFromControls);
+  clearBtn.addEventListener('click', () => { searchEl.value=''; categoryEl.value='all'; updateFromControls(); });
+
+  // Cart operations (dedupe and qty support)
+  function addToCartById(id, qty = 1){
+    const cart = getCart();
+    const prod = PRODUCTS.find(p => p.id === id);
+    if(!prod) return;
+    const existing = cart.find(i => i.id === id);
+    if(existing){
+      existing.qty = (existing.qty || 1) + qty;
+    } else {
+      cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: qty });
+    }
+    setCart(cart);
+    toast(`${prod.name} added to cart`);
+    // update any open cart UI if implemented
+    if(typeof renderCart === 'function') renderCart();
+  }
+
+  function removeFromCartById(id){
+    let cart = getCart();
+    cart = cart.filter(i=>i.id !== id);
+    setCart(cart);
+    if(typeof renderCart === 'function') renderCart();
+  }
+
+  function changeQtyById(id, delta){
+    const cart = getCart();
+    const item = cart.find(i => i.id === id);
+    if(!item) return;
+    item.qty = Math.max(0, (item.qty || 0) + delta);
+    if(item.qty === 0) {
+      const idx = cart.findIndex(i=>i.id===id);
+      if(idx >= 0) cart.splice(idx,1);
+    }
+    setCart(cart);
+    if(typeof renderCart === 'function') renderCart();
+  }
+
+  // Modal accessibility helpers
+  let focusTrapHandler = null;
+  function trapFocus(modalEl){
+    const focusable = modalEl.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])');
+    if(!focusable.length) return;
+    let idx = 0;
+    focusable[0].focus();
+    focusTrapHandler = (e) => {
+      if(e.key === 'Tab'){
+        e.preventDefault();
+        idx = e.shiftKey ? (idx - 1 + focusable.length) % focusable.length : (idx + 1) % focusable.length;
+        focusable[idx].focus();
+      }
+      if(e.key === 'Escape') {
+        closeModal();
+      }
+    };
+    document.addEventListener('keydown', focusTrapHandler);
+  }
+
+  function releaseFocusTrap(){
+    if(focusTrapHandler){
+      document.removeEventListener('keydown', focusTrapHandler);
+      focusTrapHandler = null;
+    }
+  }
+
+  // Modal implementation (accessible-ish)
+  function openModal(product){
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <div class="modal" role="document">
+          <h3 style="margin-top:0">${safeText(product.name)}</h3>
+          <div class="muted">Category: ${safeText(product.category)} • Stock: ${product.stock}</div>
+          <p style="margin:8px 0;font-weight:600">Price: ${formatCurrency(product.price)}</p>
+          <p>${safeText(product.desc)}</p>
+          <div style="display:flex;gap:.5rem;margin-top:1rem;justify-content:flex-end">
+            <button class="btn ghost" id="modal-close" aria-label="Close dialog">Close</button>
+            <button class="btn primary" id="modal-add">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    `;
+    modalRoot.setAttribute('aria-hidden','false');
+
+    const modalBackdrop = modalRoot.querySelector('.modal-backdrop');
+    const modalEl = modalRoot.querySelector('.modal');
+    trapFocus(modalEl);
+
+    modalBackdrop.addEventListener('click', (ev)=>{ if(ev.target === modalBackdrop) closeModal(); }, { once: true });
+    const closeBtn = document.getElementById('modal-close');
+    const addBtn = document.getElementById('modal-add');
+    closeBtn.addEventListener('click', closeModal, { once: true });
+    addBtn.addEventListener('click', () => { addToCartById(product.id, 1); closeModal(); }, { once: true });
+  }
+
+  function closeModal(){
+    modalRoot.innerHTML = '';
+    modalRoot.setAttribute('aria-hidden','true');
+    releaseFocusTrap();
+  }
+
+  // Payment modal (lean, reuses same trap)
+  function openPaymentModal(){
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <div class="modal" role="document">
+          <h3 style="margin-top:0">Payment (Demo)</h3>
+          <p class="muted">This is a demo payment form. No real processing.</p>
+          <form id="payment-form" aria-label="Payment form">
+            <input name="payer" placeholder="Name on card" required />
+            <input name="card" placeholder="Card number (demo)" required />
+            <div class="row" style="display:flex;gap:.5rem">
+              <input name="exp" placeholder="MM/YY" required />
+              <input name="cvc" placeholder="CVC" required />
+            </div>
+            <input name="amount" type="number" step="0.01" placeholder="Amount (USD)" required />
+            <div style="display:flex;gap:.5rem;margin-top:.75rem">
+              <button class="btn primary" type="submit">Pay</button>
+              <button class="btn ghost" type="button" id="payment-cancel">Cancel</button>
+            </div>
+          </form>
+          <div id="payment-result" style="margin-top:.5rem;color:var(--muted)"></div>
+        </div>
+      </div>
+    `;
+    modalRoot.setAttribute('aria-hidden','false');
+
+    const modalEl = modalRoot.querySelector('.modal');
+    trapFocus(modalEl);
+
+    const form = document.getElementById('payment-form');
+    document.getElementById('payment-cancel').addEventListener('click', closeModal, { once: true });
+    modalRoot.querySelector('.modal-backdrop').addEventListener('click', (ev)=>{ if(ev.target.classList.contains('modal-backdrop')) closeModal(); }, { once: true });
+
+    form.addEventListener('submit', (ev)=>{
+      ev.preventDefault();
+      const data = {
+        payer: form.payer.value.trim(),
+        card: '****' + String(form.card.value || '').slice(-4),
+        amount: Number(form.amount.value || 0),
+        ts: Date.now()
+      };
+      const payments = JSON.parse(localStorage.getItem(KEYS.PAYMENTS) || '[]');
+      payments.push(data);
+      localStorage.setItem(KEYS.PAYMENTS, JSON.stringify(payments));
+      document.getElementById('payment-result').textContent = `Payment recorded (demo): ${data.payer} — ${formatCurrency(data.amount)}`;
+      setTimeout(closeModal, 1000);
+      toast(`Payment saved (demo) — ${formatCurrency(data.amount)}`);
+    }, { once: true });
+  }
+
+  if(paymentLink){
+    paymentLink.addEventListener('click', (ev)=>{ ev.preventDefault(); openPaymentModal(); });
+  }
+
+  // Contact form (persist messages)
+  const contactForm = document.getElementById('contact-form');
+  if(contactForm){
+    contactForm.addEventListener('submit', (ev)=>{
+      ev.preventDefault();
+      const data = {
+        name: contactForm.name.value.trim(),
+        email: contactForm.email.value.trim(),
+        message: contactForm.message.value.trim(),
+        ts: Date.now()
+      };
+      if(!data.name || !data.email || !data.message){
+        document.getElementById('contact-result').textContent = 'Please fill in all fields.';
+        return;
+      }
+      const messages = JSON.parse(localStorage.getItem(KEYS.MESSAGES) || '[]');
+      messages.push(data);
+      localStorage.setItem(KEYS.MESSAGES, JSON.stringify(messages));
+      document.getElementById('contact-result').textContent = `Thanks, ${data.name}! We'll reply to ${data.email}. (Saved demo message)`;
+      contactForm.reset();
+    });
+  }
+
+  // Save sample contact helper (if button exists)
+  const saveSampleBtn = document.getElementById('save-sample');
+  if(saveSampleBtn){
+    saveSampleBtn.addEventListener('click', ()=> {
+      localStorage.setItem(KEYS.MESSAGES, JSON.stringify([{name:'Test Farmer',email:'farmer@example.com',message:'Interested in bulk fertilizer',ts:Date.now()}]));
+      document.getElementById('contact-result').textContent = 'Sample contact saved to localStorage.';
+      toast('Sample contact saved');
+    });
+  }
+
+  // ESC global close
+  document.addEventListener('keydown', (ev)=>{ if(ev.key === 'Escape') closeModal(); });
+
+  // Small cart UI render if user wants it — expose function; keep lightweight
+  function renderCart(){
+    // preserve original API: find DOM #product-list to avoid errors; do nothing if no cart UI
+    const cart = getCart();
+    // nothing to render into main UI by default; implementers can extend this.
+    // Optionally show a quick console summary for debugging:
+    // console.info('Cart updated', cart);
+  }
+
+  // expose API
+  window.Agrimac = {
+    PRODUCTS,
+    renderList,
+    getCart,
+    setCart,
+    addToCartById,
+    removeFromCartById,
+    changeQtyById,
+    openModal,
+    openPaymentModal
+  };
+
+  // expose years to elements already present
+  const year = new Date().getFullYear();
+  const yearEls = document.querySelectorAll('#year, #foot-year');
+  yearEls.forEach(el => el && (el.textContent = year));
+
+})();
+  </script>
+</body>
+</html>

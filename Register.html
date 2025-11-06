@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;font-family:sans-serif;background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;background-size:cover;color:white;}
+.container{background:rgba(0,0,0,0.7);padding:20px;margin:20px;border-radius:12px;}
+h1,h2,h3{text-shadow:2px 2px 5px #000;}
+a{color:#a8e6cf;text-decoration:none;}
+a:hover{color:#ffd3b6;}
+.btn{padding:10px 15px;border:none;background:#0057b7;color:white;cursor:pointer;border-radius:4px;margin:5px;}
+.btn:hover{background:#003f8f;}
+.card{background:rgba(255,255,255,0.1);padding:10px;margin:10px 0;border-radius:6px;}
+input,textarea,select{width:90%;padding:8px;margin:5px auto;display:block;border-radius:4px;border:1px solid #0073e6;background:#00264d;color:white;font-weight:500;text-align:center;}
+table{border-collapse:collapse;width:80%;margin:15px auto;text-align:center;border:1px solid #ccc;color:white;}
+th,td{padding:10px;border:1px solid #ccc;}
+.alert{background:rgba(255,239,150,0.3);padding:10px;margin:10px auto;border-left:5px solid #ffb300;color:#222;font-weight:700;max-width:600px;text-align:center;}
+.hidden{display:none;}
+#aiChatBox{background:rgba(0,51,102,0.8);padding:10px;border-radius:8px;margin-top:10px;}
+#aiChatBox input{width:75%;display:inline-block;}
+#aiChatBox button{width:20%;display:inline-block;}
+#notifications{position:fixed;top:10px;right:10px;width:300px;z-index:1000;}
+</style>
+</head>
+<body>
+<div id="notifications"></div>
+<div class="container">
+<h1>Agrimac.com - Interactive Farmer App</h1>
+
+<div id="alertBox" class="alert hidden"></div>
+
+<!-- Registration/Login -->
+<div id="authSection">
+<h2>Register</h2>
+<form id="registerForm">
+<input type="text" placeholder="Full Name" id="regName" required>
+<input type="email" placeholder="Email" id="regEmail" required>
+<input type="password" placeholder="Password" id="regPassword" required>
+<select id="regType" required>
+<option value="farmer">Farmer</option>
+<option value="buyer">Buyer</option>
+</select>
+<button type="submit" class="btn">Register</button>
+</form>
+
+<h2>Login</h2>
+<form id="loginForm">
+<input type="email" placeholder="Email" id="loginEmail" required>
+<input type="password" placeholder="Password" id="loginPassword" required>
+<button type="submit" class="btn">Login</button>
+</form>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard" class="hidden">
+<p>Welcome, <span id="userName"></span>! | <button class="btn" id="logoutBtn">Logout</button></p>
+
+<!-- Farmer Section -->
+<div id="farmerSection" class="hidden">
+<h2>Add Product</h2>
+<form id="addProductForm">
+<input type="text" placeholder="Product Name" id="prodName" required>
+<textarea placeholder="Description" id="prodDesc" required></textarea>
+<input type="number" step="0.01" placeholder="Price" id="prodPrice" required>
+<input type="number" placeholder="Quantity" id="prodQty" required>
+<button type="submit" class="btn">Add Product</button>
+</form>
+</div>
+
+<h2>Available Products</h2>
+<div id="productsList"></div>
+
+<!-- Weather Panel -->
+<h2>Weather Focus</h2>
+<select id="regionSelect" class="btn">
+<option value="Kampala">Kampala</option>
+<option value="Gulu">Gulu</option>
+<option value="Mbale">Mbale</option>
+<option value="Mbarara">Mbarara</option>
+</select>
+<div id="weatherInfo">
+<p><strong>Location:</strong> Kampala</p>
+<p><strong>Temperature:</strong> 27°C</p>
+<p><strong>Condition:</strong> Partly Cloudy</p>
+<p><strong>Humidity:</strong> 65%</p>
+<p><strong>Forecast:</strong> Light showers expected in the afternoon.</p>
+</div>
+
+<!-- Crop Planner -->
+<h2>Crop Planner</h2>
+<p><strong>Region:</strong> Central Uganda</p>
+<p><strong>Current Season:</strong> July - Start of second rainy season</p>
+<p><strong>Recommended Crops:</strong> Maize, Beans, Groundnuts</p>
+<table>
+<tr>
+<th>Crop</th><th>Planting Time</th><th>Harvest Time</th>
+</tr>
+<tr>
+<td>Maize</td><td>Early July</td><td>Late October</td>
+</tr>
+<tr>
+<td>Beans</td><td>Mid-July</td><td>Early October</td>
+</tr>
+<tr>
+<td>Groundnuts</td><td>July</td><td>November</td>
+</tr>
+</table>
+
+<!-- AI Chat -->
+<h2>Ask AI a Farming Question</h2>
+<button class="btn" onclick="toggleAIChat()">Open AI Chat</button>
+<div id="aiChatBox" class="hidden">
+<input type="text" id="aiQuestion" placeholder="Ask a farming question..." />
+<button onclick="askAI()">Ask</button>
+<div id="aiResponse" style="margin-top:10px;color:#ffe066;font-weight:600;"></div>
+</div>
+
+<!-- Profile Management -->
+<div id="profileSection" class="hidden">
+  <h2>Profile Management</h2>
+  <form id="profileForm">
+    <input type="text" id="profileName" placeholder="Full Name" required>
+    <input type="email" id="profileEmail" placeholder="Email" required>
+    <input type="password" id="profilePassword" placeholder="New Password">
+    <select id="profileType" required>
+      <option value="farmer">Farmer</option>
+      <option value="buyer">Buyer</option>
+    </select>
+    <button type="submit" class="btn">Update Profile</button>
+  </form>
+</div>
+
+<!-- Order History -->
+<div id="orderHistorySection" class="hidden">
+  <h2>Order History</h2>
+  <div id="orderHistoryList"></div>
+</div>
+
+<!-- Messaging/Chat -->
+<div id="chatSection" class="hidden">
+  <h2>Messaging</h2>
+  <div id="chatBox" style="background:rgba(0,0,0,0.5);padding:10px;border-radius:8px;">
+    <input type="text" id="chatInput" placeholder="Type a message..." style="width:75%;">
+    <button id="chatSendBtn" class="btn" style="width:20%;">Send</button>
+    <div id="chatMessages" style="margin-top:10px;max-height:120px;overflow-y:auto;"></div>
+  </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div id="adminSection" class="hidden">
+  <h2>Admin Dashboard</h2>
+  <p>Manage users and products below:</p>
+  <div id="adminUsers"></div>
+  <div id="adminProducts"></div>
+</div>
+
+<footer style="text-align:center;margin-top:20px;color:#ccc;">
+&copy; 2025 Agrimac.com | Interactive Demo
+</footer>
+</div>
+
+<script>
+// ---------- Local Data ----------
+let users = [];
+let products = [];
+let orders = [];
+let messages = [];
+let isAdmin = false;
+
+// Weather info
+const weatherData = {
+  Kampala:{temp:"27°C", cond:"Partly Cloudy", humidity:"65%", forecast:"Light showers expected."},
+  Gulu:{temp:"28°C", cond:"Sunny", humidity:"55%", forecast:"Clear day."},
+  Mbale:{temp:"25°C", cond:"Cloudy", humidity:"70%", forecast:"Possible rain."},
+  Mbarara:{temp:"26°C", cond:"Rainy", humidity:"80%", forecast:"Heavy rain expected."}
+};
+
+// ---------- Notifications System ----------
+function addNotification(message, type='info', duration=4000){
+    const notifContainer = document.getElementById('notifications');
+    const div = document.createElement('div');
+    div.style.background = type==='alert'?'#ffb300':'#0057b7';
+    div.style.color = type==='alert'?'#222':'#fff';
+    div.style.padding = '10px 15px';
+    div.style.marginTop = '8px';
+    div.style.borderRadius = '6px';
+    div.style.boxShadow = '0 2px 8px rgba(0,0,0,0.5)';
+    div.style.fontWeight = '600';
+    div.textContent = message;
+    notifContainer.appendChild(div);
+    setTimeout(()=>div.remove(),duration);
+}
+
+// Demo notifications
+setTimeout(()=>addNotification('🌧️ Heavy rain expected in Northern Uganda!', 'alert'), 2000);
+setTimeout(()=>addNotification('💰 Market price of Maize increased to 1,300 UGX/kg', 'info'), 4000);
+setTimeout(()=>addNotification('🆕 New product added: Organic Beans', 'info'), 6000);
+function notifyNewProduct(productName){ addNotification(`🆕 New product added: ${productName}`,'info'); }
+
+// ---------- Utils ----------
+function showAlert(msg){
+    const alertBox = document.getElementById('alertBox');
+    alertBox.textContent = msg;
+    alertBox.classList.remove('hidden');
+    setTimeout(()=>alertBox.classList.add('hidden'),3000);
+}
+
+// ---------- Registration ----------
+document.getElementById('registerForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const pass = document.getElementById('regPassword').value;
+    const type = document.getElementById('regType').value;
+    if(users.some(u=>u.email===email)){showAlert('Email already exists!'); return;}
+    users.push({name,email,pass,type});
+    showAlert('Registration successful!');
+    this.reset();
+});
+
+// ---------- Login ----------
+document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPassword').value;
+    const user = users.find(u=>u.email===email && u.pass===pass);
+    if(!user && email==='admin@admin.com' && pass==='admin'){
+      isAdmin = true;
+      document.getElementById('authSection').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      document.getElementById('userName').textContent = 'Admin';
+      showAdmin();
+      return;
+    }
+    if(!user){showAlert('Invalid credentials'); return;}
+    window.currentUser = user;
+    document.getElementById('authSection').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('userName').textContent = user.name;
+    if(user.type==='farmer') document.getElementById('farmerSection').classList.remove('hidden');
+    renderProducts();
+});
+
+// ---------- Logout ----------
+document.getElementById('logoutBtn').addEventListener('click', function(){
+    window.currentUser = null;
+    document.getElementById('authSection').classList.remove('hidden');
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('farmerSection').classList.add('hidden');
+});
+
+// ---------- Add Product ----------
+document.getElementById('addProductForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('prodName').value;
+    const desc = document.getElementById('prodDesc').value;
+    const price = parseFloat(document.getElementById('prodPrice').value);
+    const qty = parseInt(document.getElementById('prodQty').value);
+    products.push({name,desc,price,qty,farmer:window.currentUser.name});
+    this.reset();
+    renderProducts();
+    showAlert('Product added!');
+    notifyNewProduct(name);
+});
+
+// ---------- Render Products ----------
+function renderProducts(){
+    const list = document.getElementById('productsList');
+    list.innerHTML = '';
+    products.forEach((p,i)=>{
+        const div = document.createElement('div');
+        div.className='card';
+        div.innerHTML=`<h4>${p.name}</h4><p>${p.desc}</p><p>Price: ${p.price} | Stock: ${p.qty}</p>`;
+        if(window.currentUser.type==='buyer'){
+            const btn = document.createElement('button');
+            btn.textContent='Order';
+            btn.className='btn';
+            btn.onclick=()=>{
+                if(p.qty>0){
+                  p.qty--;
+                  orders.push({buyer: window.currentUser.email, product: p.name, qty: 1, date: new Date().toLocaleString()});
+                  renderProducts();
+                  showAlert('Order placed!');
+                } else showAlert('Out of stock!');
+            };
+            div.appendChild(btn);
+        }
+        list.appendChild(div);
+    });
+}
+
+// ---------- Weather Selector ----------
+document.getElementById('regionSelect').addEventListener('change', function(){
+    const region = this.value;
+    const info = weatherData[region];
+    document.getElementById('weatherInfo').innerHTML=
+        `<p><strong>Location:</strong> ${region}</p>
+         <p><strong>Temperature:</strong> ${info.temp}</p>
+         <p><strong>Condition:</strong> ${info.cond}</p>
+         <p><strong>Humidity:</strong> ${info.humidity}</p>
+         <p><strong>Forecast:</strong> ${info.forecast}</p>`;
+});
+
+// ---------- AI Chat ----------
+function toggleAIChat(){
+    const box = document.getElementById('aiChatBox');
+    box.classList.toggle('hidden');
+}
+function askAI(){
+    const q = document.getElementById('aiQuestion').value.toLowerCase();
+    const resp = document.getElementById('aiResponse');
+    if(q.includes('maize')) resp.textContent='Plant maize during the rainy season and fertilize regularly.';
+    else if(q.includes('beans')) resp.textContent='Beans grow well in well-drained soil and moderate rainfall.';
+    else if(q.includes('coffee')) resp.textContent='Coffee requires shade and regular pruning for good yield.';
+    else resp.textContent='Please consult your local extension officer for advice.';
+}
+
+// Profile Management
+function showProfile() {
+  document.getElementById('profileSection').classList.remove('hidden');
+  document.getElementById('profileName').value = window.currentUser.name;
+  document.getElementById('profileEmail').value = window.currentUser.email;
+  document.getElementById('profileType').value = window.currentUser.type;
+}
+document.getElementById('userName').onclick = showProfile;
+document.getElementById('profileForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  window.currentUser.name = document.getElementById('profileName').value;
+  window.currentUser.email = document.getElementById('profileEmail').value;
+  if(document.getElementById('profilePassword').value)
+    window.currentUser.pass = document.getElementById('profilePassword').value;
+  window.currentUser.type = document.getElementById('profileType').value;
+  showAlert('Profile updated!');
+  document.getElementById('userName').textContent = window.currentUser.name;
+  document.getElementById('profileSection').classList.add('hidden');
+});
+
+// Order History
+function showOrderHistory() {
+  document.getElementById('orderHistorySection').classList.remove('hidden');
+  const list = document.getElementById('orderHistoryList');
+  list.innerHTML = '';
+  const userOrders = orders.filter(o => o.buyer === window.currentUser.email);
+  if(userOrders.length === 0) { list.textContent = 'No orders yet.'; return; }
+  userOrders.forEach(o => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<strong>${o.product}</strong> | Qty: ${o.qty} | Date: ${o.date}`;
+    list.appendChild(div);
+  });
+}
+
+// Messaging/Chat
+function showChat() {
+  document.getElementById('chatSection').classList.remove('hidden');
+  renderChat();
+}
+function renderChat() {
+  const chatMessages = document.getElementById('chatMessages');
+  chatMessages.innerHTML = '';
+  messages.forEach(m => {
+    const div = document.createElement('div');
+    div.textContent = `${m.sender}: ${m.text}`;
+    chatMessages.appendChild(div);
+  });
+}
+document.getElementById('chatSendBtn').onclick = function() {
+  const text = document.getElementById('chatInput').value;
+  if(text) {
+    messages.push({sender: window.currentUser.name, text});
+    renderChat();
+    document.getElementById('chatInput').value = '';
+  }
+};
+
+// Admin Dashboard
+function showAdmin() {
+  document.getElementById('adminSection').classList.remove('hidden');
+  renderAdminUsers();
+  renderAdminProducts();
+}
+function renderAdminUsers() {
+  const div = document.getElementById('adminUsers');
+  div.innerHTML = '<h3>Users</h3>';
+  users.forEach(u => {
+    div.innerHTML += `<div class="card">${u.name} (${u.email}) - ${u.type}</div>`;
+  });
+}
+function renderAdminProducts() {
+  const div = document.getElementById('adminProducts');
+  div.innerHTML = '<h3>Products</h3>';
+  products.forEach(p => {
+    div.innerHTML += `<div class="card">${p.name} | ${p.desc} | Price: ${p.price} | Stock: ${p.qty}</div>`;
+  });
+}
+
+// Add admin login (demo: email=admin@admin.com, pass=admin)
+document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPassword').value;
+    const user = users.find(u=>u.email===email && u.pass===pass);
+    if(!user && email==='admin@admin.com' && pass==='admin'){
+      isAdmin = true;
+      document.getElementById('authSection').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      document.getElementById('userName').textContent = 'Admin';
+      showAdmin();
+      return;
+    }
+    if(!user){showAlert('Invalid credentials'); return;}
+    window.currentUser = user;
+    document.getElementById('authSection').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('userName').textContent = user.name;
+    if(user.type==='farmer') document.getElementById('farmerSection').classList.remove('hidden');
+    renderProducts();
+});
+
+// Add buttons to dashboard for new features
+document.addEventListener('DOMContentLoaded', function() {
+  const dash = document.getElementById('dashboard');
+  if(!document.getElementById('profileBtn')) {
+    const profileBtn = document.createElement('button');
+    profileBtn.textContent = 'Profile';
+    profileBtn.className = 'btn';
+    profileBtn.id = 'profileBtn';
+    profileBtn.onclick = showProfile;
+    dash.insertBefore(profileBtn, dash.children[1]);
+  }
+  if(!document.getElementById('orderHistoryBtn')) {
+    const orderBtn = document.createElement('button');
+    orderBtn.textContent = 'Order History';
+    orderBtn.className = 'btn';
+    orderBtn.id = 'orderHistoryBtn';
+    orderBtn.onclick = showOrderHistory;
+    dash.insertBefore(orderBtn, dash.children[2]);
+  }
+  if(!document.getElementById('chatBtn')) {
+    const chatBtn = document.createElement('button');
+    chatBtn.textContent = 'Chat';
+    chatBtn.className = 'btn';
+    chatBtn.id = 'chatBtn';
+    chatBtn.onclick = showChat;
+    dash.insertBefore(chatBtn, dash.children[3]);
+  }
+  if(!document.getElementById('adminBtn')) {
+    const adminBtn = document.createElement('button');
+    adminBtn.textContent = 'Admin';
+    adminBtn.className = 'btn';
+    adminBtn.id = 'adminBtn';
+    adminBtn.onclick = showAdmin;
+    dash.insertBefore(adminBtn, dash.children[4]);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AGRIMAC.COM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover fixed;
+            min-height: 100vh;
+            position: relative;
+            background-attachment: fixed;
+        }
+        .github-header {
+            background: rgba(67, 146, 224, 0.95);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+           
+           h1{background: #0056b3;
+
+           } padding: 0.7em 2em;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        .github-logo {
+            font-weight: bold;
+            font-size: 1.5em;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        .github-logo svg {
+            margin-right: 0.5em;
+        }
+        .github-search {
+            position: relative;
+            flex: 1;
+            margin: 0 2em;
+            display: flex;
+            align-items: center;
+        }
+        .github-search input {
+            width: 100%;
+            padding: 0.5em 1em;
+            border-radius: 6px;
+            border: 1px solid #444d56;
+            background: #2f363d;
+            color: #fff;
+            font-size: 1em;
+        }
+        .github-search input::placeholder { color: #b8c3cc; }
+        .github-search .search-icon {
+            position: absolute;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .github-nav {
+            display: flex;
+            align-items: center;
+        }
+        .github-nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 2em;
+            font-weight: 500;
+            font-size: 1em;
+            transition: color 0.2s;
+        }
+        .github-nav a.active, .github-nav a:hover {
+            color: #2188ff;
+        }
+        .github-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-left: 2em;
+            cursor: pointer;
+            border: 2px solid #444d56;
+        }
+        .hero {
+            background: rgba(36, 41, 46, 0.92);
+            backdrop-filter: blur(15px);
+            color: #fff;
+            text-align: center;
+            padding: 3em 2em 2em 2em;
+            margin-bottom: 2em;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+        }
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.3em;
+            letter-spacing: 2px;
+        }
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 1em;
+        }
+        .hero button {
+            background: #2188ff;
+            color: #fff;
+            border: none;
+            padding: 1em 2em;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 1em;
+            cursor: pointer;
+        }
+        .section {
+            max-width: 1100px;
+            margin: 2em auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            padding: 2em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .section h2 {
+            text-align: center;
+            color: #24292e;
+            margin-bottom: 1em;
+        }
+        .products-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2em;
+            justify-content: center;
+        }
+        .product-card {
+            background: rgba(246, 248, 250, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 240px;
+            padding: 1em;
+            text-align: left;
+            border: 1px solid rgba(225, 228, 232, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card img {
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 0.5em;
+        }
+        .product-card h4 {
+            font-family: 'Fira Mono', 'Consolas', monospace;
+            font-size: 1.1em;
+            margin: 0.5em 0;
+            color: #24292e;
+        }
+        .product-meta {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            font-size: 0.95em;
+            color: #586069;
+            margin-bottom: 0.5em;
+        }
+        .product-meta svg {
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+        .product-card button {
+            background: #2188ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5em 1em;
+            margin-top: 0.5em;
+            cursor: pointer;
+        }
+        .about-text, .agribusiness-text {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .contact-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(246, 248, 250, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2em;
+            border-radius: 8px;
+            border: 1px solid rgba(225, 228, 232, 0.6);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            margin-bottom: 1em;
+            padding: 0.7em;
+            border-radius: 4px;
+            border: 1px solid #e1e4e8;
+            font-size: 1em;
+        }
+        .contact-form button {
+            width: 100%;
+            background: #2188ff;
+            color: #fff;
+            border: none;
+            padding: 0.7em;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        footer {
+            background: rgba(36, 41, 46, 0.95);
+            backdrop-filter: blur(15px);
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+            margin-top: 2em;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .github-sidebar {
+            display: none; /* Hide the sidebar completely */
+        }
+        .main-content {
+            margin-left: 0; /* Adjust main content to occupy full width */
+        }
+        @media (max-width: 900px) {
+            .github-sidebar { width: 60px; padding-top: 60px; }
+            .github-sidebar button { padding: 1em 0.5em; font-size: 0.9em; }
+            .main-content { margin-left: 60px; }
+        }
+        @media (max-width: 700px) {
+            .github-sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+        /* Cart button & modal */
+        .btn-cart {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 0.35em 0.6em;
+            border-radius: 6px;
+            font-weight: 600;
+            display:inline-flex;
+            align-items:center;
+            gap:.5rem;
+            cursor:pointer;
+        }
+        .cart-badge {
+            background:#ff4d4f;
+            color:#fff;
+            border-radius:999px;
+            padding:2px 8px;
+            font-size:0.85rem;
+            min-width:22px;
+            text-align:center;
+        }
+        /* Cart modal (simple) */
+        #cartModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:120; align-items:center; justify-content:center; }
+        #cartModal .modal-inner { background:#fff; width:360px; max-width:92%; border-radius:8px; padding:1rem; box-shadow:0 8px 30px rgba(2,6,23,.4); }
+        #cartModal h3{margin:0 0 .5rem 0}
+        .cart-item { display:flex; justify-content:space-between; gap:.5rem; padding:.5rem 0; border-bottom:1px solid #eee; align-items:center }
+        .cart-item-actions button{margin-left:.35rem;padding:.25rem .45rem;border-radius:5px;border:1px solid #ddd;background:#fff;cursor:pointer}
+        .cart-empty { text-align:center; color:#666; padding:1rem 0; }
+
+        /* Analytics / chart */
+        .analytics { max-width:1100px; margin:2rem auto; padding:1rem; background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+        .chart-container { width:100%; height:300px; display:flex; align-items:center; justify-content:center; }
+        #paymentsChart { width:100%; height:100%; max-height:320px; }
+
+        /* Additional CSS for better styling */
+    .btn-primary {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 0.5em 1em;
+        border-radius: 4px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    .btn-primary:hover {
+        background: #0056b3;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: #fff;
+        border: none;
+        padding: 0.5em 1em;
+        border-radius: 4px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.5em;
+        margin: 1em 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .alert {
+        padding: 1em;
+        border-radius: 4px;
+        margin: 1em 0;
+        font-size: 1em;
+    }
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    @media (max-width: 600px) {
+        .github-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .github-nav {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product-card {
+            width: 100%;
+        }
+    }
+
+    .banner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(233, 245, 233, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 2em;
+        margin-top: 0;
+        border-bottom: 1px solid rgba(212, 212, 212, 0.3);
+        animation: slideIn 5s ease-out infinite; /* Infinite animation */
+        animation-delay: 4s; /* Delay of 4 seconds between cycles */
+        position: relative; /* Ensure proper stacking context */
+        z-index: -1; /* Send the banner behind other elements */
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+    .banner img {
+        max-height: 150px;
+        margin-right: 2em;
+        width: auto;
+    }
+    .banner-text {
+        font-size: 2em;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Metrics Cards Styles */
+    .metrics-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2em;
+        margin-top: 2em;
+    }
+
+    .metric-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 2em;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #228b22, #2e7d32, #4caf50);
+    }
+
+    .metric-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    }
+
+    .metric-icon {
+        font-size: 3em;
+        margin-bottom: 1em;
+        display: block;
+    }
+
+    .metric-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #2e7d32;
+        margin-bottom: 0.5em;
+        display: block;
+    }
+
+    .metric-title {
+        font-size: 1.3em;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.8em;
+        display: block;
+    }
+
+    .metric-description {
+        font-size: 0.95em;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .metric-trend {
+        display: inline-block;
+        padding: 0.3em 0.8em;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-top: 1em;
+    }
+
+    .trend-up {
+        background: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+    }
+
+    .trend-stable {
+        background: rgba(33, 150, 243, 0.1);
+        color: #2196f3;
+    }
+
+    /* Testimonials Marquee Styles */
+    .testimonials-marquee {
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(15px);
+        padding: 1.5em 0;
+        overflow: hidden;
+        position: relative;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .marquee-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .marquee-content {
+        display: flex;
+        animation: scroll-left 30s linear infinite;
+        gap: 2em;
+        padding: 0 1em;
+    }
+
+    .testimonial-card {
+        flex: 0 0 auto;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 1.5em;
+        min-width: 320px;
+        max-width: 400px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .testimonial-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+        gap: 1em;
+    }
+
+    .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #228b22, #4caf50);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .testimonial-info h4 {
+        margin: 0;
+        color: #333;
+        font-size: 1.1em;
+        font-weight: 600;
+    }
+
+    .testimonial-info .title {
+        color: #666;
+        font-size: 0.9em;
+        margin-top: 0.2em;
+    }
+
+    .testimonial-text {
+        color: #444;
+        font-style: italic;
+        line-height: 1.5;
+        position: relative;
+        padding-left: 1.5em;
+    }
+
+    .testimonial-text::before {
+        content: '"';
+        position: absolute;
+        left: 0;
+        top: -0.2em;
+        font-size: 2em;
+        color: #228b22;
+        opacity: 0.3;
+    }
+
+    @keyframes scroll-left {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .marquee-container:hover .marquee-content {
+        animation-play-state: paused;
+    }
+
+    @media (max-width: 768px) {
+        .testimonial-card {
+            min-width: 280px;
+            max-width: 320px;
+            padding: 1.2em;
+        }
+        
+        .testimonial-text {
+            font-size: 0.9em;
+        }
+    }
+
+    @keyframes slideIn {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        50% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+    }
+    </style>
+    <script>
+        // Activate tab on click (top nav)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Top nav links
+            const navLinks = document.querySelectorAll('.github-nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        document.querySelector(this.getAttribute('href')).scrollIntoView({behavior: 'smooth'});
+                    }
+                });
+            });
+            navLinks[0].classList.add('active');
+
+            // Sidebar buttons
+            const sidebarButtons = document.querySelectorAll('.github-sidebar button');
+            const panelMap = {
+              'Dashboard': 'dashboard',
+              'Repositories': 'products',
+              'Marketplace': 'analytics',
+              'Explore': 'about',
+              'Pull Requests': 'products',
+              'Issues': 'contact',
+              'Discussions': 'about',
+              'Settings': 'contact'
+            };
+
+            function showPanel(id) {
+              document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+              const el = document.getElementById(id);
+              if (el) el.classList.add('active');
+              // update aria-hidden for a11y
+              document.querySelectorAll('.panel').forEach(p => p.setAttribute('aria-hidden', !p.classList.contains('active')));
+            }
+
+            sidebarButtons.forEach(btn => {
+              btn.addEventListener('click', function () {
+                sidebarButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const key = this.textContent.trim();
+                const id = panelMap[key];
+                if (id) showPanel(id);
+              });
+            });
+
+            // show dashboard initially (already marked active in markup, ensure aria-hidden updated)
+            showPanel('dashboard');
+        });
+    </script>
+</head>
+<body>
+    <div class="github-sidebar">
+    </div>
+    <div class="main-content">
+        <header class="github-header">
+            <div class="github-logo"></div>
+            <div class="github-search">
+                <input id="searchInput" type="text" placeholder="Search tools, products, equipment and products...">
+                <button id="searchIcon" class="search-icon" aria-label="Search">🔍</button>
+            </div>
+            <nav class="github-nav">
+                <a href="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\AGRIMAC.html" class="active">Home</a>
+                <a href="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\forum.html">Forum</a>
+                <a href="josephhaxzy@gmail.com">Contact</a>
+                <a href="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\agri haxzy.html">More</a>
+                <a href="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\About Us.html">About Us</a>
+                <a href="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\JAY.html">Shop Now</a>
+                <a href="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\Register.html">Register</a>
+                <button id="cartBtn" class="btn-cart" aria-label="Open cart">Cart <span id="cartCount" class="cart-badge" aria-hidden="true">0</span></button>
+                <img src="C:\\Users\\JOSEPH HAXZY\\Downloads\\images.jpg" alt="User Avatar" class="github-avatar">
+            </nav>
+        </header>
+        <div class="banner">
+        <img src="C:\Users\JOSEPH HAXZY\Downloads\ChatGPT Image Sep 25, 2025, 10_24_45 PM.png" alt="Agrimac Banner">
+            <div class="banner-text">Powering Tomorrow’s Harvest</div>
+        </div>
+        <section class="hero">
+            <b><i><h1>AGRIMAC</h1></i></b>
+            <p>Your partner in agricultural machinery and solutions</p>
+            <p>Discover the latest in agricultural machinery, tools, and technology. We provide high-quality solutions for modern farming.</p>
+        </section>
+        <main>
+            <section id="products" class="section">
+                <h2>Latest Products</h2>
+                <div class="products-list">
+                    <div class="product-card">
+                        <img src="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\site photos\John Deere 5075E_ Redefining Farm Efficiency.jpeg" alt="John Deere 5075E Tractor">
+                        <h4>John Deere 5075E Tractor</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 120 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 30 forks</span>
+                        </div>
+                        <p>Reliable 75HP tractor for medium to large farms. Fuel efficient and easy to maintain.</p>
+                        <p><b>UGX.34,000,000</b></p>
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\site photos\download.jpeg" alt="Plough">
+                        <h4>Kverneland Mounted Plough</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 80 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 12 forks</span>
+                        </div>
+                        <p>Heavy-duty plough for deep soil tillage. Suitable for all soil types.</p>
+                        <p><b>UGX.1,500,000</b></p>
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="C:\Users\JOSEPH HAXZY\Desktop\Agrimac\AGRIMAC DOC\machine 2.png" alt="Harvester">
+                        <h4>Case IH Axial-Flow Harvester</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 200 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 45 forks</span>
+                        </div>
+                        <p>Efficient grain harvesting with minimal loss. Advanced technology for high yields.</p>
+                        <p><b>UGX.4,500,000</b></p>
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\site photos\machine 2.png" alt="Rotary Tiller">
+                        <h4>Rotary Tiller (Power Tiller)</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 48 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 7 forks</span>
+                        </div>
+                        <p>Compact tiller for seedbed preparation and weed control on small to medium farms.</p>
+                        <p><b>UGX.2000,000</b></p>
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\site photos\Construction-Equipment-online-shop-uganda.jpg" alt="Seed Drill">
+                        <h4>Precision Seed Drill</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 34 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 5 forks</span>
+                        </div>
+                        <p>Accurate row seeding for cereals and legumes. Reduces seed wastage and improves establishment.</p>
+                        <p><b>UGX.250,000</b></p>
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\site photos\Sowing-And-Planting-Equipment.jpg" alt="Tractor Boom Sprayer">
+                        <h4>Tractor Boom Sprayer</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 90 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 14 forks</span>
+                        </div>
+                        <p>Wide-coverage sprayer for crop protection chemicals and foliar nutrition.</p>
+                        <p><b>UGX.44,400,000</b></p>
+                        <button>Add to Cart</button>
+
+                    </div>
+                    <div class="product-card">
+                        <img src="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\site photos\Tiller-Machine.jpg" alt="Irrigation Pump">
+                        <h4>Diesel Irrigation Pump</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 90 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 14 forks</span>
+                        </div>
+                        <p>High-flow pump for irrigation canals and drip systems. Reliable for dry-season watering.</p>
+                        <p><b>UGX.44,400,000</b></p>
+                        <button>Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="C:\Users\joach\OneDrive\Desktop\AGRIMAC DOC\site photos\Water-Hose-Pipe.jpg" alt="Tilling machine">
+                        <h4>Tiller machine</h4>
+                        <div class="product-meta">
+                            <span><svg width="16" height="16" fill="#f1e05a" viewBox="0 0 16 16"><path d="M8 12.027l-3.717 2.21.711-4.151-3.02-2.944 4.166-.606L8 2.25l1.86 3.286 4.166.606-3.02 2.944.711 4.151z"></path></svg> 90 stars</span>
+                            <span><svg width="16" height="16" fill="#6e5494" viewBox="0 0 16 16"><path d="M5 3.09V0h6v3.09c2.28.46 4 2.48 4 4.91 0 2.43-1.72 4.45-4 4.91V16H5v-3.09C2.72 12.45 1 10.43 1 8c0-2.43 1.72-4.45 4-4.91z"></path></svg> 14 forks</span>
+                        </div>
+                        <p>farm equipment designed specifically for tilling farm materials. Reliable for dry-season preparation.</p>
+                        <p><b>UGX.4,400,000</b></p>
+                        <button>Add to Cart</button>
+                    </div>
+                </div>
+            </section>
+            <!-- Agribusiness Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">Agribusiness in Uganda</h2>
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <p class="card-text">
+          Uganda's agribusiness sector is rapidly growing, driven by innovation and a young, energetic workforce. 
+          <strong>AGRIMAC.COM</strong> supports farmers and entrepreneurs with access to modern equipment, training, 
+          and market opportunities. Our goal is to help Ugandan agriculture become more productive, sustainable, and profitable.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Opportunities Section -->
+<section id="agribusiness-opportunities" class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Uganda's Agribusiness Opportunities</h2>
+    
+    <!-- Intro Card -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body">
+        <p>
+          Uganda's agribusiness sector presents significant investment and growth opportunities, particularly 
+          in agro-processing and value addition. The country is a major producer of various crops like coffee, 
+          bananas, and oil seeds, and has potential for further development in food processing, textiles, and beverages. 
+          Government support and private sector investment are driving growth in the sector.
+        </p>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="row g-4">
+      <!-- Key Areas -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Key Areas of Opportunity</h5>
+            <ul class="small">
+              <li><b>Agro-processing:</b> Coffee, dairy, fruit processing.</li>
+              <li><b>Commercial Farming:</b> Crops, livestock, aquaculture.</li>
+              <li><b>Inputs:</b> Fertilizers & pesticides manufacturing.</li>
+              <li><b>Cold Storage & Logistics</b></li>
+              <li><b>Farm Machinery</b></li>
+              <li><b>Packaging</b></li>
+              <li><b>Irrigation</b></li>
+              <li><b>Products:</b> Coffee, bananas, tea, cereals, poultry, fish.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Drivers -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Factors Driving Growth</h5>
+            <ul class="small">
+              <li><b>Government Support</b></li>
+              <li><b>Private Investment</b></li>
+              <li><b>Favorable Climate</b></li>
+              <li><b>Strong Export Potential</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Challenges -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Challenges</h5>
+            <ul class="small">
+              <li><b>Limited Value Addition</b></li>
+              <li><b>Inadequate Infrastructure</b></li>
+              <li><b>Low Input Usage</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agribusiness Companies -->
+      <div class="col-md-12">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Examples of Agribusiness Companies</h5>
+            <ul class="small">
+              <li><b>Agric-Care Uganda:</b> Machinery, inputs, grains, aquaculture.</li>
+              <li><b>Agro and More:</b> Youth-led social enterprise empowering smallholder farmers.</li>
+              <li><b>aBi - Agricultural Business Initiative:</b> Connects agribusinesses and small farmers.</li>
+            </ul>
+            <p class="mt-3">
+              Uganda's agribusiness sector has the potential to play a crucial role in the country's 
+              economic growth. By addressing challenges and seizing opportunities, Uganda can unlock 
+              the full potential of its agricultural resources.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+            <section id="faq" class="section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq">
+            <h3>What is AGRIMAC.COM?</h3>
+            <p>AGRIMAC.COM is an online platform dedicated to providing high-quality agricultural machinery, tools, and solutions for modern farming.</p>
+            
+            <h3>How can I place an order?</h3>
+            <p>You can browse our products, add items to your cart, and proceed to checkout. For assistance, contact our support team.</p>
+            
+            <h3>Do you offer delivery services?</h3>
+            <p>Yes, we provide delivery services across Uganda. Delivery charges may vary depending on your location.</p>
+            
+            <h3>Can I return a product?</h3>
+            <p>Yes, we have a return policy for defective or incorrect items. Please contact us within 7 days of receiving your order.</p>
+            
+            <h3>How can I contact customer support?</h3>
+            <p>You can reach us via email at info@agrimac.com or call us at 0787672987.</p>
+        </div>
+    </section>
+        </main>
+
+        <!-- Metrics Section -->
+        <section id="metrics" class="section">
+            <h2>Our Performance Metrics</h2>
+            <div id="metrics-cards" class="metrics-container">
+                <!-- Cards will be dynamically created by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Testimonials Marquee -->
+        <div class="testimonials-marquee">
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <!-- Cards will be dynamically generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+         <section id="contact" class="section">
+                <h2>Feedback</h2>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+                <div style="text-align:center; margin-top:1em; color:#333;">
+                    <p><b>Address:</b> Plot 12, lira Road, LIRA, Uganda</p>
+                    <p><b>Phone:</b>0787674140</p>
+                    <p><b>Email:</b>Agrimac@gmail.com</p>
+                </div>
+            </section>
+        <footer>
+            <div style="text-align: center; padding: 1em; background: #24292e; color: #fff;">
+                <p>Connect with us on:</p>
+                <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.5em;">
+                    <a href="https://www.facebook.com" target="_blank" style="color: #fff; text-decoration: none;">Facebook</a>
+                    <a href="https://www.instagram.com" target="_blank" style="color: #fff; text-decoration: none;">Instagram</a>
+                    <a href="https://www.youtube.com" target="_blank" style="color: #fff; text-decoration: none;">YouTube</a>
+                    <a href="https://www.twitter.com" target="_blank" style="color: #fff; text-decoration: none;">Twitter</a>
+                    <a href="https://www.linkedin.com" target="_blank" style="color: #fff; text-decoration: none;">LinkedIn</a>
+                </div>
+                <p style="margin-top: 1em;">&copy; 2025 AGRIMAC.COM. All rights reserved.</p>
+            </div>
+        </footer>
+        <!-- Log in Modal -->
+        <div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:10;">
+            <div style="background:#fff; max-width:350px; margin:10vh auto; padding:2em; border-radius:8px; position:relative;">
+                <span style="position:absolute; top:10px; right:15px; cursor:pointer;" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
+                <h3>Log in</h3>
+                <form onsubmit="event.preventDefault(); document.getElementById('loginModal').style.display='none'; document.getElementById('profileLink').style.display='inline'; document.getElementById('adminLink').style.display='inline';">
+                    <input type="text" placeholder="Username" required style="width:100%; margin-bottom:1em; padding:0.5em;">
+                    <input type="password" placeholder="Password" required style="width:100%; margin-bottom:1em; padding:0.5em;">
+                    <button type="submit" style="width:100%; background:#2188ff; color:#fff; border:none; padding:0.7em; border-radius:4px;">Log in</button>
+                </form>
+            </div>
+        </div>
+        <!-- Sign up Modal -->
+        <div id="signupModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:10;">
+            <div style="background:#fff; max-width:350px; margin:10vh auto; padding:2em; border-radius:8px; position:relative;">
+                <span style="position:absolute; top:10px; right:15px; cursor:pointer;" onclick="document.getElementById('signupModal').style.display='none'">&times;</span>
+                <h3>Sign up</h3>
+                <form onsubmit="event.preventDefault(); document.getElementById('signupModal').style.display='none'; document.getElementById('profileLink').style.display='inline';">
+                    <input type="text" placeholder="Username" required style="width:100%; margin-bottom:1em; padding:0.5em;">
+                    <input type="email" placeholder="Email" required style="width:100%; margin-bottom:1em; padding:0.5em;">
+                    <input type="password" placeholder="Password" required style="width:100%; margin-bottom:1em; padding:0.5em;">
+                    <button type="submit" style="width:100%; background:#2188ff; color:#fff; border:none; padding:0.7em; border-radius:4px;">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="cartModal" aria-hidden="true">
+        <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Shopping cart">
+            <h3>Your Cart</h3>
+            <div id="cartItemsContainer"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
+                <strong id="cartTotal">Total: UGX 0</strong>
+                <div>
+                    <button id="checkoutBtn" style="background:#28a745;color:#fff;border:none;padding:.45rem .7rem;border-radius:6px;cursor:pointer">Checkout</button>
+                    <button id="closeCartBtn" style="margin-left:.5rem;padding:.35rem .6rem;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Search behavior: filter product cards by title/description
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchIcon = document.getElementById('searchIcon');
+            const productsList = document.querySelector('.products-list');
+
+            if (!searchInput || !searchIcon || !productsList) return;
+
+            function performSearch(query) {
+                const q = (query || '').trim().toLowerCase();
+                const cards = document.querySelectorAll('.product-card');
+                let any = false;
+                cards.forEach(card => {
+                    const title = (card.querySelector('h4')?.textContent || '').toLowerCase();
+                    const desc = Array.from(card.querySelectorAll('p')).map(p => p.textContent).join(' ').toLowerCase();
+                    if (!q || title.includes(q) || desc.includes(q)) {
+                        card.style.display = '';
+                        any = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                let noEl = document.getElementById('noResults');
+                if (!any && q) {
+                    if (!noEl) {
+                        noEl = document.createElement('div');
+                        noEl.id = 'noResults';
+                        noEl.style.textAlign = 'center';
+                        noEl.style.marginTop = '1em';
+                        noEl.style.color = '#666';
+                        noEl.textContent = 'No products found.';
+                        productsList.parentNode.insertBefore(noEl, productsList.nextSibling);
+                    } else {
+                        noEl.style.display = 'block';
+                    }
+                } else if (noEl) {
+                    noEl.style.display = 'none';
+                }
+            }
+
+            searchIcon.addEventListener('click', function() {
+                performSearch(searchInput.value);
+                searchInput.focus();
+            });
+
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(searchInput.value);
+                }
+            });
+
+            searchInput.addEventListener('input', function(e) {
+                if (e.target.value.trim() === '') performSearch('');
+            });
+        });
+    </script>
+    <script>
+        // Activate Shop Now button: scroll to products and highlight section
+        document.addEventListener('DOMContentLoaded', function() {
+            const shopBtn = document.getElementById('shopNowBtn');
+            const products = document.getElementById('products');
+            if (shopBtn && products) {
+                shopBtn.addEventListener('click', function() {
+                    products.scrollIntoView({behavior: 'smooth'});
+                    const prev = products.style.boxShadow;
+                    products.style.transition = 'box-shadow 0.25s ease';
+                    products.style.boxShadow = '0 0 0 6px rgba(33,136,255,0.12)';
+                    setTimeout(() => { products.style.boxShadow = prev; }, 1000);
+                });
+            }
+        });
+    </script>
+    <script>
+    // Cart logic: localStorage-backed
+    (function(){
+        const CART_KEY = 'agrimac_demo_cart_v1';
+        const cartBtn = document.getElementById('cartBtn');
+        const cartCountEl = document.getElementById('cartCount');
+        const cartModal = document.getElementById('cartModal');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartTotalEl = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+
+        function getCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }catch(e){ return []; } }
+        function setCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateBadge(); }
+        function updateBadge(){
+            const qty = getCart().reduce((s,i)=>s+(i.qty||0),0);
+            cartCountEl.textContent = qty;
+        }
+
+        function parsePrice(text){
+            // Expecting something like "UGX.18,500" or "UGX.18,500" or "$1299.99"
+            const digits = (text || '').replace(/[^\d.]/g,'');
+            return Number(digits) || 0;
+        }
+
+        function addToCart(name, price, qty=1){
+            const cart = getCart();
+            const existing = cart.find(i=>i.name===name && i.price===price);
+            if(existing) existing.qty = (existing.qty||0) + qty;
+            else cart.push({ name, price, qty });
+            setCart(cart);
+            toast(`${name} added to cart`);
+        }
+
+        // wire product Add to Cart buttons (event delegation)
+        document.addEventListener('click', function(e){
+            const btn = e.target.closest('.product-card button');
+            if(!btn) return;
+            const card = btn.closest('.product-card');
+            if(!card) return;
+            // title in h4, price in last <p> which contains UGX...
+            const title = (card.querySelector('h4')?.textContent || 'Item').trim();
+            const priceText = Array.from(card.querySelectorAll('p')).map(p=>p.textContent).find(t => /UGX|UGX\.|UGX /.test(t)) || card.querySelector('.price')?.textContent || '';
+            const price = parsePrice(priceText);
+            addToCart(title, price, 1);
+        });
+
+        // render cart modal
+        function renderCartModal(){
+            const cart = getCart();
+            cartItemsContainer.innerHTML = '';
+            if(!cart.length){ cartItemsContainer.innerHTML = '<div class="cart-empty">Your cart is empty.</div>'; cartTotalEl.textContent = 'Total: UGX 0'; return; }
+            cart.forEach((item, idx) => {
+              const div = document.createElement('div');
+              div.className = 'cart-item';
+              div.innerHTML = `
+                <div>
+                  <div style="font-weight:600">${item.name}</div>
+                  <div style="font-size:.9rem;color:#666">${item.qty} × UGX ${Number(item.price).toLocaleString()}</div>
+                </div>
+                <div class="cart-item-actions">
+                  <button data-action="dec" data-idx="${idx}">-</button>
+                  <button data-action="inc" data-idx="${idx}">+</button>
+                  <button data-action="remove" data-idx="${idx}">Remove</button>
+                </div>
+              `;
+              cartItemsContainer.appendChild(div);
+            });
+            const total = cart.reduce((s,i)=>s + (i.price * (i.qty||1)), 0);
+            cartTotalEl.textContent = `Total: UGX ${total.toLocaleString()}`;
+          }
+
+          // cart button handlers
+          cartBtn && cartBtn.addEventListener('click', function(){ renderCartModal(); cartModal.style.display = 'flex'; cartModal.setAttribute('aria-hidden','false'); });
+          closeCartBtn && closeCartBtn.addEventListener('click', function(){ cartModal.style.display = 'none'; cartModal.setAttribute('aria-hidden','true'); });
+
+          // cart item actions
+          cartItemsContainer && cartItemsContainer.addEventListener('click', function(e){
+            const btn = e.target.closest('button[data-action]');
+            if(!btn) return;
+            const idx = Number(btn.dataset.idx);
+            const action = btn.dataset.action;
+            const cart = getCart();
+            const item = cart[idx];
+            if(!item) return;
+            if(action === 'remove'){ cart.splice(idx,1); setCart(cart); renderCartModal(); }
+            if(action === 'inc'){ item.qty = (item.qty||1) + 1; setCart(cart); renderCartModal(); }
+            if(action === 'dec'){ item.qty = Math.max(1, (item.qty||1) - 1); setCart(cart); renderCartModal(); }
+          });
+
+          // checkout (demo)
+          checkoutBtn && checkoutBtn.addEventListener('click', function(){
+            const cart = getCart();
+            if(!cart.length){ alert('Cart is empty'); return; }
+            // demo: save payments record and clear cart
+            const payments = JSON.parse(localStorage.getItem('agrimac_payments')||'[]');
+            const total = cart.reduce((s,i)=>s + i.price * (i.qty||1),0);
+            payments.push({ items: cart, total, ts: Date.now() });
+            localStorage.setItem('agrimac_payments', JSON.stringify(payments));
+            localStorage.removeItem(CART_KEY);
+            setCart([]);
+            renderCartModal();
+            cartModal.style.display = 'none';
+            toast('Checkout complete (demo).');
+          });
+
+          // initialize badge
+          updateBadge();
+        })();
+    </script>
+    <script>
+    // Testimonials Marquee Generator
+    (function(){
+        const testimonialsData = [
+            {
+                name: 'Dr. Sarah Williams',
+                title: 'Director of Innovation',
+                text: 'The AI-driven analytics and compliance features have revolutionized our operations. Patient data security and HIPAA compliance are now seamlessly integrated.',
+                initials: 'SW'
+            },
+            {
+                name: 'John Thompson',
+                title: 'CEO, AgriTech Solutions',
+                text: 'AGRIMAC\'s equipment has transformed our farming operations. The quality and reliability are unmatched in the industry.',
+                initials: 'JT'
+            },
+            {
+                name: 'Maria Rodriguez',
+                title: 'Farm Manager',
+                text: 'The precision farming tools have increased our yield by 40% while reducing water usage. Truly game-changing technology.',
+                initials: 'MR'
+            },
+            {
+                name: 'David Chen',
+                title: 'Operations Director',
+                text: 'Outstanding service and support. The machinery is robust and the maintenance team is always responsive.',
+                initials: 'DC'
+            },
+            {
+                name: 'Emma Johnson',
+                title: 'Agricultural Consultant',
+                text: 'AGRIMAC provides the best combination of innovation and practicality. Their solutions are designed for real-world farming challenges.',
+                initials: 'EJ'
+            }
+        ];
+
+        function createTestimonialCard(testimonial) {
+            const card = document.createElement('div');
+            card.className = 'testimonial-card';
+            
+            card.innerHTML = `
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">${testimonial.initials}</div>
+                    <div class="testimonial-info">
+                        <h4>${testimonial.name}</h4>
+                        <div class="title">${testimonial.title}</div>
+                    </div>
+                </div>
+                <div class="testimonial-text">${testimonial.text}</div>
+            `;
+            
+            return card;
+        }
+
+        function initializeTestimonials() {
+            const container = document.querySelector('.marquee-content');
+            if (!container) return;
+
+            // Create cards and add them twice for seamless loop
+            const cards = testimonialsData.map(testimonial => createTestimonialCard(testimonial));
+            
+            // Add cards twice for continuous scrolling
+            cards.forEach(card => container.appendChild(card));
+            cards.forEach(card => container.appendChild(card.cloneNode(true)));
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeTestimonials);
+        } else {
+            initializeTestimonials();
+        }
+    })();
+
+    // Metrics Cards Generator
+    (function(){
+        const metricsData = [
+            {
+                title: 'Ratings',
+                value: '4.8',
+                icon: '⭐',
+                description: 'Average customer rating across all products and services',
+                trend: 'up',
+                trendText: '+0.3 from last month'
+            },
+            {
+                title: 'Enterprise Deployments',
+                value: '250+',
+                icon: '🏢',
+                description: 'Successful enterprise implementations nationwide',
+                trend: 'up',
+                trendText: '+15 new deployments'
+            },
+            {
+                title: 'Client Satisfaction',
+                value: '96%',
+                icon: '😊',
+                description: 'Client satisfaction rate based on feedback surveys',
+                trend: 'stable',
+                trendText: 'Consistently high'
+            }
+        ];
+
+        function createMetricCard(metric) {
+            const card = document.createElement('div');
+            card.className = 'metric-card';
+            
+            const trendClass = metric.trend === 'up' ? 'trend-up' : 'trend-stable';
+            
+            card.innerHTML = `
+                <span class="metric-icon">${metric.icon}</span>
+                <span class="metric-value">${metric.value}</span>
+                <span class="metric-title">${metric.title}</span>
+                <p class="metric-description">${metric.description}</p>
+                <span class="metric-trend ${trendClass}">${metric.trendText}</span>
+            `;
+            
+            // Add animation on load
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            
+            return card;
+        }
+
+        function animateCards() {
+            const cards = document.querySelectorAll('.metric-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        }
+
+        function initializeMetrics() {
+            const container = document.getElementById('metrics-cards');
+            if (!container) return;
+
+            // Clear existing content
+            container.innerHTML = '';
+
+            // Create and append cards
+            metricsData.forEach(metric => {
+                const card = createMetricCard(metric);
+                container.appendChild(card);
+            });
+
+            // Trigger animation after a short delay
+            setTimeout(animateCards, 100);
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeMetrics);
+        } else {
+            initializeMetrics();
+        }
+    })();
+    </script>
+
+    <script>
+    // Payments chart: lightweight Canvas renderer
+    (function(){
+        const KEY = 'agrimac_payments_v1';
+        const canvas = document.getElementById('paymentsChart');
+        const showBtn = document.getElementById('showChartBtn');
+        const refreshBtn = document.getElementById('refreshChartBtn');
+        const msgEl = document.getElementById('chartMessage');
+        if (!canvas) return;
+
+        function getPayments() {
+            try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; }
+        }
+
+        function renderPaymentsChart() {
+            const payments = getPayments();
+            const data = aggregate(payments, 10);
+            drawChart(data);
+        }
+
+        // wire buttons
+        showBtn && showBtn.addEventListener('click', function() { renderPaymentsChart(); });
+        refreshBtn && refreshBtn.addEventListener('click', function() { renderPaymentsChart(); });
+
+        // auto-render if payments exist
+        if (getPayments().length) renderPaymentsChart();
+    })();
+    </script>
+</body>
+</html>

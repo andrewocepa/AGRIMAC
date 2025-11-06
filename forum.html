@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AGRIMAC Community</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+    }
+    .chat-container {
+      height: 100vh;
+      background-color: #f8f9fa;
+    }
+    .chat-sidebar {
+      border-right: 1px solid #ddd;
+      background: #fff;
+      overflow-y: auto;
+      height: 100vh;
+    }
+    .chat-list-item {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      transition: background 0.2s;
+    }
+    .chat-list-item:hover, .chat-list-item.active {
+      background: #e9ecef;
+    }
+    .group-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e5ddd5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #075e54;
+      font-size: 1.2em;
+    }
+    .unread-badge {
+      position: absolute;
+      right: 10px;
+      top: 15px;
+      background: #25d366;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 7px;
+      font-size: 0.8em;
+      display: none;
+    }
+    .chat-main {
+      background: #e5ddd5;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-header {
+      padding: 10px;
+      background: #075e54;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .online-dot {
+      width: 10px;
+      height: 10px;
+      background: #25d366;
+      border-radius: 50%;
+      margin-left: 5px;
+      display: inline-block;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .message {
+      max-width: 70%;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      position: relative;
+      word-break: break-word;
+    }
+    .bubble {
+      padding: 10px 15px;
+      border-radius: 15px;
+      max-width: 100%;
+      position: relative;
+      margin-bottom: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .message.sent .bubble {
+      background: #dcf8c6;
+      color: #222;
+    }
+    .message.received .bubble {
+      background: #fff;
+      color: #222;
+    }
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid #ccc;
+      object-fit: cover;
+    }
+    .status {
+      font-size: 0.7em;
+      color: #888;
+      margin-left: 5px;
+    }
+    .chat-input {
+      background: #f1f1f1;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .typing-indicator {
+      font-size: 0.9em;
+      color: #888;
+      margin-bottom: 5px;
+      font-style: italic;
+      height: 18px;
+    }
+    .action-btns {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
+      opacity: 0.6;
+    }
+    .action-btns button {
+      background: none;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      color: #888;
+    }
+    .search-bar {
+      padding: 8px 10px;
+      background: #f1f1f1;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .search-bar input {
+      flex: 1;
+      border-radius: 15px;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+    }
+    .group-info-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      margin-left: auto;
+      cursor: pointer;
+    }
+    .modal-bg {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 300px;
+      max-width: 90vw;
+    }
+    .dark-mode {
+      background: #222 !important;
+      color: #eee !important;
+    }
+    .dark-mode .chat-main { background: #333 !important; }
+    .dark-mode .chat-sidebar { background: #222 !important; }
+    .dark-mode .chat-header { background: #333 !important; color: #eee !important; }
+    .dark-mode .chat-input { background: #222 !important; }
+    .dark-mode .bubble { background: #444 !important; color: #eee !important; }
+    .dark-mode .message.received .bubble { background: #222 !important; }
+    .dark-mode .search-bar { background: #222 !important; }
+    .dark-toggle-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .chat-container {
+        flex-direction: column;
+      }
+      .chat-sidebar {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+      .chat-list-item {
+        min-width: 120px;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+      }
+      .chat-main {
+        height: calc(100vh - 120px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">AGRIMAC</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav" aria-controls="navbarNav" 
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#agribusiness-opportunities">Opportunities</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link active" href="community.html">Community</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- WhatsApp-like Layout -->
+  <div class="container-fluid chat-container">
+    <div class="row h-100">
+      <!-- Sidebar (Contacts / Groups) -->
+      <div class="col-md-4 col-12 chat-sidebar p-0" id="chatSidebar">
+        <div class="chat-list-item active" data-group="Agric Farmers Group">
+          <span class="group-avatar">AF</span>
+          <div>
+            <b>Agric Farmers Group</b><br>
+            <small>Last message: Hello farmers!</small>
+          </div>
+          <span class="unread-badge" id="badge-Agric Farmers Group">1</span>
+        </div>
+        <div class="chat-list-item" data-group="Machinery Dealers">
+          <span class="group-avatar">MD</span>
+          <div>
+            <b>Machinery Dealers</b><br>
+            <small>Last message: New tractors available.</small>
+          </div>
+          <span class="unread-badge" id="badge-Machinery Dealers">0</span>
+        </div>
+        <div class="chat-list-item" data-group="Youth in Agribusiness">
+          <span class="group-avatar">YA</span>
+          <div>
+            <b>Youth in Agribusiness</b><br>
+            <small>Last message: Let's meet tomorrow.</small>
+          </div>
+          <span class="unread-badge" id="badge-Youth in Agribusiness">0</span>
+        </div>
+        <div class="chat-list-item" data-group="Export Hub">
+          <span class="group-avatar">EH</span>
+          <div>
+            <b>Export Hub</b><br>
+            <small>Last message: Coffee shipment update.</small>
+          </div>
+          <span class="unread-badge" id="badge-Export Hub">0</span>
+        </div>
+      </div>
+
+      <!-- Chat Main -->
+      <div class="col-md-8 col-12 chat-main p-0 d-flex flex-column">
+        <div class="chat-header" id="chatHeader">
+          <span class="group-avatar" id="headerAvatar">AF</span>
+          <h5 class="mb-0">Agric Farmers Group</h5>
+          <span class="online-dot" title="Online"></span>
+          <button class="group-info-btn" id="groupInfoBtn" title="Group Info">&#9432;</button>
+          <button class="dark-toggle-btn" id="darkToggleBtn" title="Toggle Dark Mode">&#9790;</button>
+        </div>
+        <div class="search-bar">
+          <input type="text" id="searchInput" class="form-control" placeholder="Search messages...">
+          <button id="clearSearchBtn" class="btn btn-outline-secondary btn-sm" title="Clear">&#10006;</button>
+        </div>
+        <div class="typing-indicator" id="typingIndicator"></div>
+        <div class="chat-messages flex-grow-1 d-flex flex-column" id="chatMessages">
+          <!-- Messages will be rendered here -->
+        </div>
+        <form class="chat-input" onsubmit="return false;">
+          <button class="emoji-btn btn btn-light" id="emojiBtn" title="Emoji" type="button">&#128515;</button>
+          <button class="attach-btn btn btn-light" id="attachBtn" title="Attach" type="button">&#128206;</button>
+          <input type="file" id="fileInput" style="display:none;">
+          <select id="senderSelect" class="form-select" style="max-width:120px;">
+            <option value="You">You</option>
+            <option value="Jane">Jane</option>
+            <option value="Admin">Admin</option>
+            <option value="Paul">Paul</option>
+          </select>
+          <input type="text" id="messageInput" class="form-control" placeholder="Type a message...">
+          <button id="sendBtn" class="btn btn-success" type="submit">➤</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Group Info Modal -->
+  <div id="groupInfoModal" style="display:none;">
+    <div class="modal-bg" id="modalBg">
+      <div class="modal-content">
+        <h4 id="modalGroupName"></h4>
+        <p id="modalGroupDesc"></p>
+        <b>Members:</b>
+        <ul id="modalGroupMembers"></ul>
+        <button onclick="closeGroupModal()" class="btn btn-sm btn-secondary mt-2">Close</button>
+      </div>
+    </div>
+  </div>
+  <audio id="notifSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124b7b2b48.mp3"></audio>
+  <script>
+    // Message data per group
+    const groups = {
+      "Agric Farmers Group": [
+        { sender: "Admin", text: "Hello everyone, welcome to AGRIMAC community!", time: "09:00" },
+        { sender: "Jane", text: "Thank you! Excited to learn more about agribusiness.", time: "09:01" },
+        { sender: "Admin", text: "We’ll share training sessions and opportunities here.", time: "09:02" }
+      ],
+      "Machinery Dealers": [
+        { sender: "Paul", text: "New tractors available.", time: "08:50" }
+      ],
+      "Youth in Agribusiness": [
+        { sender: "Jane", text: "Let's meet tomorrow.", time: "07:30" }
+      ],
+      "Export Hub": [
+        { sender: "Admin", text: "Coffee shipment update.", time: "06:15" }
+      ]
+    };
+
+    let currentGroup = "Agric Farmers Group";
+
+    const sendBtn = document.getElementById("sendBtn");
+    const messageInput = document.getElementById("messageInput");
+    const chatMessages = document.getElementById("chatMessages");
+    const chatSidebar = document.getElementById("chatSidebar");
+    const chatHeader = document.getElementById("chatHeader");
+    const senderSelect = document.getElementById("senderSelect");
+    const typingIndicator = document.getElementById("typingIndicator");
+
+    // Avatars for users
+    const userAvatars = {
+      "You": "https://ui-avatars.com/api/?name=You&background=09c&color=fff",
+      "Jane": "https://ui-avatars.com/api/?name=Jane&background=25d366&color=fff",
+      "Admin": "https://ui-avatars.com/api/?name=Admin&background=075e54&color=fff",
+      "Paul": "https://ui-avatars.com/api/?name=Paul&background=ff9a42&color=fff"
+    };
+
+    function formatTime(date) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Group info data
+    const groupInfo = {
+      "Agric Farmers Group": {
+        desc: "A group for all farmers in AGRIMAC.",
+        members: ["Admin", "Jane", "Paul", "You"]
+      },
+      "Machinery Dealers": {
+        desc: "Machinery sales and support.",
+        members: ["Paul", "Admin", "You"]
+      },
+      "Youth in Agribusiness": {
+        desc: "Young entrepreneurs in agriculture.",
+        members: ["Jane", "You", "Admin"]
+      },
+      "Export Hub": {
+        desc: "Exporters and logistics.",
+        members: ["Admin", "You"]
+      }
+    };
+
+    // Message actions: reply, edit, delete
+    let replyToMsg = null;
+    let editMsgIdx = null;
+    let searchTerm = "";
+
+    function renderMessages() {
+      chatMessages.innerHTML = "";
+      let msgs = groups[currentGroup];
+      if (searchTerm) {
+        msgs = msgs.filter(m => m.text.toLowerCase().includes(searchTerm.toLowerCase()));
+      }
+      msgs.forEach((msg, idx) => {
+        // Bootstrap flex for direction
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("message", "mb-2");
+        if (msg.sender === "You") {
+          msgDiv.classList.add("sent", "ms-auto", "d-flex", "flex-row-reverse", "align-items-end");
+        } else {
+          msgDiv.classList.add("received", "me-auto", "d-flex", "align-items-end");
+        }
+        // Avatar
+        const avatar = document.createElement("img");
+        avatar.className = "avatar";
+        avatar.src = userAvatars[msg.sender] || userAvatars["Admin"];
+        // Bubble
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.innerHTML = `<b>${msg.sender}</b> <span style="font-size:0.8em;color:#888;">${msg.time}</span><br>${msg.text}`;
+        if (msg.sender === "You") {
+          bubble.innerHTML += `<span class="status">&#10003;&#10003; Read</span>`;
+        }
+        if (msg.file) {
+          bubble.innerHTML += `<br><img src="${msg.file}" class="img-fluid rounded mt-2" style="max-width:120px;">`;
+        }
+        if (msg.reply) {
+          bubble.innerHTML = `<div class="border-start ps-2 mb-1 text-muted small">
+            Reply to <b>${msg.reply.sender}</b>: ${msg.reply.text}
+          </div>` + bubble.innerHTML;
+        }
+        if (msg.sender === "You") {
+          bubble.innerHTML += `<div class="small text-muted">Seen by: ${groupInfo[currentGroup].members.filter(m=>m!==msg.sender).join(", ")}</div>`;
+        }
+        // Action buttons
+        const actionBtns = document.createElement("div");
+        actionBtns.className = "action-btns";
+        actionBtns.innerHTML = `
+          <button title="Reply" class="btn btn-sm btn-light">&#8617;</button>
+          ${msg.sender === "You" ? `<button title="Edit" class="btn btn-sm btn-light">&#9998;</button><button title="Delete" class="btn btn-sm btn-light">&#128465;</button>` : ""}
+        `;
+        actionBtns.children[0].onclick = () => {
+          replyToMsg = { sender: msg.sender, text: msg.text };
+          messageInput.focus();
+        };
+        if (msg.sender === "You") {
+          actionBtns.children[1].onclick = () => {
+            editMsgIdx = idx;
+            messageInput.value = msg.text;
+            messageInput.focus();
+          };
+          actionBtns.children[2].onclick = () => {
+            groups[currentGroup].splice(idx, 1);
+            renderMessages();
+          };
+        }
+        bubble.appendChild(actionBtns);
+        // Bootstrap flex direction
+        if (msg.sender === "You") {
+          msgDiv.appendChild(bubble);
+          msgDiv.appendChild(avatar);
+        } else {
+          msgDiv.appendChild(avatar);
+          msgDiv.appendChild(bubble);
+        }
+        chatMessages.appendChild(msgDiv);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function sendMessage() {
+      const msg = messageInput.value.trim();
+      const sender = senderSelect.value;
+      if (msg !== "") {
+        const now = new Date();
+        if (editMsgIdx !== null) {
+          groups[currentGroup][editMsgIdx].text = msg;
+          editMsgIdx = null;
+        } else {
+          groups[currentGroup].push({
+            sender: sender,
+            text: msg,
+            time: formatTime(now),
+            reply: replyToMsg
+          });
+          // Play notification sound
+          document.getElementById("notifSound").play();
+        }
+        replyToMsg = null;
+        renderMessages();
+        messageInput.value = "";
+      }
+    }
+
+    // Send on button click or form submit
+    sendBtn.addEventListener("click", sendMessage);
+    document.querySelector('.chat-input').addEventListener("submit", sendMessage);
+
+    // Send on Enter key
+    messageInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Emoji picker (simple)
+    document.getElementById("emojiBtn").onclick = function() {
+      const emojis = ["😀","😂","😍","👍","🙏","🎉","🚜","🌱"];
+      let picker = document.getElementById("emojiPicker");
+      if (!picker) {
+        picker = document.createElement("div");
+        picker.id = "emojiPicker";
+        picker.style.position = "absolute";
+        picker.style.bottom = "70px";
+        picker.style.left = "50%";
+        picker.style.transform = "translateX(-50%)";
+        picker.style.background = "#fff";
+        picker.style.border = "1px solid #ccc";
+        picker.style.borderRadius = "10px";
+        picker.style.padding = "8px";
+        picker.style.zIndex = "1000";
+        emojis.forEach(e => {
+          const btn = document.createElement("button");
+          btn.textContent = e;
+          btn.style.fontSize = "1.5em";
+          btn.style.margin = "2px";
+          btn.style.border = "none";
+          btn.style.background = "none";
+          btn.onclick = () => {
+            messageInput.value += e;
+            picker.remove();
+          };
+          picker.appendChild(btn);
+        });
+        document.body.appendChild(picker);
+      } else {
+        picker.remove();
+      }
+    };
+
+    // File/image upload
+    document.getElementById("attachBtn").onclick = function() {
+      document.getElementById("fileInput").click();
+    };
+    document.getElementById("fileInput").onchange = function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          groups[currentGroup].push({
+            sender: senderSelect.value,
+            text: "Sent an image",
+            time: formatTime(new Date()),
+            file: ev.target.result
+          });
+          renderMessages();
+        };
+        reader.readAsDataURL(file);
+      }
+      e.target.value = "";
+    };
+
+    // Typing indicator simulation
+    messageInput.addEventListener("input", function() {
+      if (messageInput.value.length > 0) {
+        typingIndicator.textContent = senderSelect.value + " is typing...";
+      } else {
+        typingIndicator.textContent = "";
+      }
+    });
+    messageInput.addEventListener("blur", function() {
+      typingIndicator.textContent = "";
+    });
+
+    // Unread badge simulation
+    function updateBadges() {
+      Object.keys(groups).forEach(group => {
+        const badge = document.getElementById("badge-" + group);
+        if (!badge) return;
+        const unread = groups[group].filter(m => m.sender !== "You").length;
+        badge.textContent = unread;
+        badge.style.display = unread > 0 ? "inline-block" : "none";
+      });
+    }
+
+    // Sidebar group switching
+    chatSidebar.addEventListener("click", function(e) {
+      const item = e.target.closest(".chat-list-item");
+      if (item) {
+        // Remove active from all
+        Array.from(chatSidebar.children).forEach(el => el.classList.remove("active"));
+        item.classList.add("active");
+        currentGroup = item.getAttribute("data-group");
+        chatHeader.querySelector("h5").textContent = currentGroup;
+        // Update header avatar
+        document.getElementById("headerAvatar").textContent = item.querySelector(".group-avatar").textContent;
+        renderMessages();
+        updateBadges();
+      }
+    });
+
+    // Search/filter messages
+    document.getElementById("searchInput").oninput = function(e) {
+      searchTerm = e.target.value;
+      renderMessages();
+    };
+    document.getElementById("clearSearchBtn").onclick = function() {
+      document.getElementById("searchInput").value = "";
+      searchTerm = "";
+      renderMessages();
+    };
+
+    // Group info modal
+    document.getElementById("groupInfoBtn").onclick = function() {
+      const info = groupInfo[currentGroup];
+      document.getElementById("modalGroupName").textContent = currentGroup;
+      document.getElementById("modalGroupDesc").textContent = info.desc;
+      document.getElementById("modalGroupMembers").innerHTML = info.members.map(m=>`<li>${m}</li>`).join("");
+      document.getElementById("groupInfoModal").style.display = "block";
+    };
+    function closeGroupModal() {
+      document.getElementById("groupInfoModal").style.display = "none";
+    }
+    document.getElementById("modalBg").onclick = function(e) {
+      if (e.target === this) closeGroupModal();
+    };
+
+    // Dark mode toggle
+    document.getElementById("darkToggleBtn").onclick = function() {
+      document.body.classList.toggle("dark-mode");
+    };
+
+    // Initial render
+    renderMessages();
+    updateBadges();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+</body>
+</html>

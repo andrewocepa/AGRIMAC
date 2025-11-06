@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Agriculture Products Marketplace</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      font-family: system-ui, Arial, sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    nav {
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    }
+    .product-article {
+      display: flex;
+      flex-direction: row;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .product-article:hover {
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+      transform: translateY(-4px) scale(1.02);
+      background: rgba(255, 255, 255, 0.98);
+    }
+    .product-img {
+      width: 260px;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 0;
+      flex-shrink: 0;
+    }
+    .product-details {
+      padding: 2rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .product-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #228B22;
+      margin-bottom: 0.5rem;
+    }
+    .product-category {
+      font-size: 1.1rem;
+      color: #228B22;
+      font-weight: 500;
+      margin-bottom: 0.5em;
+    }
+    .product-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #f68b1e;
+      margin-bottom: 0.5em;
+    }
+    .product-location {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 0.5em;
+    }
+    .product-desc {
+      font-size: 1.08rem;
+      color: #222;
+      margin-bottom: 0.7em;
+    }
+    .product-btn {
+      background: #228B22;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 500;
+      padding: 0.6em 1.2em;
+      border: none;
+      align-self: flex-start;
+      margin-top: 0.7em;
+      box-shadow: 0 2px 8px rgba(34,139,34,0.08);
+      transition: background 0.2s;
+    }
+    .product-btn:hover {
+      background: #176c16;
+    }
+    .newspaper-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .newspaper-col {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      min-width: 320px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
+      gap: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .newspaper-col:hover {
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.98);
+    }
+    .farmer-img {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 0;
+      box-shadow: 0 2px 12px rgba(34,139,34,0.10);
+      flex-shrink: 0;
+    }
+    .farmer-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .farmer-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #228B22;
+      margin-bottom: 0.7rem;
+    }
+    .product-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #f68b1e;
+      margin-bottom: 0.5em;
+    }
+    .product-location {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 0.5em;
+    }
+    .product-desc {
+      font-size: 1.08rem;
+      color: #222;
+      margin-bottom: 0.7em;
+    }
+    .farmer-story {
+      font-size: 1.08rem;
+      color: #222;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+    .product-btn {
+      background: #228B22;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 500;
+      padding: 0.6em 1.2em;
+      border: none;
+      align-self: flex-start;
+      margin-top: 0.7em;
+      box-shadow: 0 2px 8px rgba(34,139,34,0.08);
+      transition: background 0.2s;
+    }
+    .product-btn:hover {
+      background: #176c16;
+    }
+    @media (max-width: 900px) {
+      .newspaper-row { flex-direction: column; gap: 0; }
+      .newspaper-col { flex-direction: column; gap: 0; }
+      .farmer-img { width: 100%; height: 180px; margin-bottom: 1.2rem; }
+      .farmer-details { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-success" href="#">AgriMarket</a>
+      <form class="d-flex ms-auto" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search agricultural products..." aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i> Search</button>
+      </form>
+    </div>
+  </nav>
+  <div class="container">
+    <h2 class="mb-4 text-center" style="font-size: 2.5rem; font-weight: 800; color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,0.5), 0 0 30px rgba(255,255,255,0.3); margin-bottom: 3rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.2);">Agricultural News & Products</h2>
+    <div class="row">
+      <!-- Left column: Products -->
+      <div class="col-lg-6 col-12">
+        <div class="newspaper-row" style="flex-direction:column;gap:0;">
+          <!-- Render each product as a separate row with image left, details right -->
+        </div>
+      </div>
+      <!-- Right column: Farmer story (example, you can add more stories or info here) -->
+      <div class="col-lg-6 col-12">
+        <div class="newspaper-col" style="flex-direction:column;align-items:flex-start;">
+          <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet John Okello: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            John Okello started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+          <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Omara James: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Omara James started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+          <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+          <div class="farmer-title">Meet Okot Emmanuel: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Okot Emmanuel started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+          <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Opio Samson: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Opio Samson started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+           <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Nyeko Amos: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Nyeko Amos started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+          <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Okello Ronald: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Okello Ronald started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+           <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Olwa Leslee: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Olwa Leslee started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+          <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Omara Samuel: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Omara Samue started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+           <img src="https://pixabay.com/get/g144688181cc4f2427663279df8dacdb1533ef3842bc376ae3101f15ca70118cad472b06dd0ac4015eb96f6e6b89dd64a752574ef0247cfdb70bdb65ef72fa08d_640.jpg"
+               alt="Beautiful Red Rose" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Akech Robina: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+             Akech Robina started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div><img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=600&q=80"
+               alt="Successful Farmer" class="farmer-img" style="width:100%;max-width:340px;height:260px;">
+          <div class="farmer-title">Meet Akello given: A Successful Ugandan Farmer</div>
+          <div class="farmer-story">
+            Akello given started his journey with just a few acres of maize and tomatoes in Lira. Through dedication, smart use of hybrid seeds, and sustainable farming practices, he transformed his small farm into a thriving agribusiness. Today, John supplies fresh produce to major markets and inspires other farmers to adopt modern techniques.<br><br>
+            "Farming is not just a job, it's a way of life. With the right tools and knowledge, anyone can succeed," says John.<br><br>
+            His story is a testament to the power of innovation and hard work in agriculture. From drip irrigation to organic fertilizers, John continues to invest in new methods to improve yields and quality. His advice to fellow farmers: "Never stop learning, and always share your success with others."
+          </div>
+          <button class="btn btn-success" onclick="alert('Contact request sent to John Okello!')">
+            <i class="bi bi-person-lines-fill"></i> Contact Farmer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Only agricultural crops and flowers images
+    const products = [
+      {
+        name: "Hybrid Maize Seeds",
+        category: "Seeds",
+        price: "UGX 25,000",
+        location: "Kampala",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "High-yield hybrid maize seeds for commercial farming.",
+        story: `Hybrid maize seeds have revolutionized farming in Uganda. Farmers like John Okello have increased their yields by over 40% using these seeds. With proper soil preparation and timely planting, hybrid maize can withstand drought and pests, ensuring food security and profitability.`
+      },
+      {
+        name: "Fresh Tomatoes (Crate)",
+        category: "Produce",
+        price: "UGX 60,000",
+        location: "Lira",
+        img: "https://pixabay.com/get/g4803ea32fa05ec77a8358222a37a09aac1604be22cecd0dc8df4ee0afef1521fb2b310a356668e3143799812c20f91804496d256e069dfe015ede1694feaa01d_640.jpg",
+        desc: "Farm fresh, juicy tomatoes delivered to your location.",
+        story: `Tomato farming is a lucrative venture for many Ugandan farmers. By using drip irrigation and organic fertilizers, farmers achieve consistent harvests and high-quality produce. Fresh tomatoes from Lira are known for their taste and shelf life, making them a favorite in local markets.`
+      },
+      {
+        name: "Organic Fertilizer (50kg)",
+        category: "Fertilizer",
+        price: "UGX 80,000",
+        location: "Mbarara",
+        img: "https://pixabay.com/get/g8fa0eb1479223cdb03599cc6dca14e76c0ce1175b10bf0623b12c504f45a832ebbbc202cf26dc555ba4ebb84fadc2480_640.jpg",
+        desc: "Eco-friendly fertilizer for healthy crop growth.",
+        story: `Organic fertilizer is essential for sustainable agriculture. Farmers in Mbarara have adopted composting and manure-based fertilizers to enrich their soils. This practice not only boosts yields but also preserves the environment for future generations.`
+      },
+      {
+        name: "Sunflower Seeds",
+        category: "Seeds",
+        price: "UGX 30,000",
+        location: "Mbale",
+        img: "https://pixabay.com/get/g6768be7ecfaf71d65941c19e22ef2a709bdada4268462f59c94a3cafe9eb44438f42fa10ad0b8cde4fadaa31ee8883e72e0bf75da75efc6ea4b51d437d7f8115_640.jpg",
+        desc: "High-quality sunflower seeds for oil and ornamental purposes.",
+        story: `Sunflower farming is gaining popularity due to its dual benefits: oil production and ornamental value. Farmers in Mbale have found sunflowers to be resilient and profitable, with demand rising for both seeds and flowers.`
+      },
+      {
+        name: "Rose Flower Plants",
+        category: "Flowers",
+        price: "UGX 15,000",
+        location: "Entebbe",
+        img: "https://pixabay.com/get/g90b2ff8134e3476c3393168324ba622d93659ecc17d2d546b0875b72a914259fef1642055c769a3673dee977da3041f8_640.jpg",
+        desc: "Beautiful rose flower plants for gardens and landscaping.",
+        story: `Rose cultivation in Entebbe has become a major source of income for smallholder farmers. With proper care and pest management, roses bloom year-round, supplying hotels, events, and homes with vibrant flowers.`
+      },
+      {
+        name: "Cabbage Heads (Bag)",
+        category: "Produce",
+        price: "UGX 40,000",
+        location: "Fort Portal",
+        img: "https://pixabay.com/get/g8fa0eb1479223cdb03599cc6dca14e76c0ce1175b10bf0623b12c504f45a832ebbbc202cf26dc555ba4ebb84fadc2480_640.jpg",
+        desc: "Fresh cabbage heads, organically grown.",
+        story: `Cabbage farming in Fort Portal is known for its organic practices. Farmers avoid chemical pesticides, relying on crop rotation and natural repellents. The result is healthy, tasty cabbages that fetch premium prices.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+      {
+        name: "Ornamental Marigold Flowers",
+        category: "Flowers",
+        price: "UGX 12,000",
+        location: "Jinja",
+        img: "https://pixabay.com/get/g3d2b9b941a9f1550deae823dcf99992e141eac95e865ac4c4b108b91a1d566c3a2c110991607a009dd24acda6785db65a855e42224aacb95cf530585a765bac1_640.jpg",
+        desc: "Bright marigold flowers for beautifying your farm or home.",
+        story: `Marigold flowers are not only beautiful but also useful in pest control. Farmers in Jinja plant marigolds alongside vegetables to repel insects naturally, reducing the need for chemical sprays.`
+      },
+    ];
+
+    // Render each product with image left, details right (like the first one)
+    const newspaperRow = document.querySelector('.newspaper-row');
+    products.forEach(prod => {
+      const col = document.createElement('div');
+      col.className = 'newspaper-col';
+      col.innerHTML = `
+        <img src="${prod.img}" alt="${prod.name}" class="farmer-img">
+        <div class="farmer-details">
+          <div class="farmer-title">${prod.name} <span class="badge bg-success bg-opacity-10 text-success">${prod.category}</span></div>
+          <div class="product-price">${prod.price}</div>
+          <div class="product-location"><i class="bi bi-geo-alt"></i> ${prod.location}</div>
+          <div class="product-desc">${prod.desc}</div>
+          <div class="farmer-story">${prod.story}</div>
+          <button class="product-btn btn btn-success" onclick="alert('Order request for ${prod.name} submitted!')">
+            <i class="bi bi-cart-plus"></i> Order Now
+          </button>
+        </div>
+      `;
+      newspaperRow.appendChild(col);
+    });
+  </script>
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</body>
+</html>
